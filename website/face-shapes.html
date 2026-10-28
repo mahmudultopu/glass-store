@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Which Glasses Suit My Face Shape? – SHADEO Guide</title>
+  <meta name="description" content="Round, oval, square, heart or diamond face? Find the sunglasses and eyeglass frames that flatter you most.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23111'/%3E%3Ccircle cx='16' cy='16' r='9' fill='%23F5A623'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="faces">
+  <!-- Page: Face shape guide. Cards are built from the faces[] field on each product in data.js.
+       Header, menus, cart drawer and footer are injected into #site-header / #site-footer by assets/js/app.js. -->
+  <div id="site-header"></div>
+  <main id="main">
+    <section class="page-hero">
+      <div class="page-width">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> / <span>Face shape guide</span></nav>
+        <h1>Which frames suit your face?</h1>
+        <p>Stand in front of a mirror, pull your hair back and trace the outline of your face. Then find your match below.</p>
+      </div>
+    </section>
+    <section class="section">
+      <div class="page-width">
+        <div class="face-grid" id="face-grid"></div>
+        <div class="reviews-cta" style="margin-top:40px">
+          <div>
+            <h2>Still not sure?</h2>
+            <p class="muted">Take the 60-second quiz, or send us a selfie and we'll pick 3 frames for you, free.</p>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <a class="btn" href="quiz.html">Take the quiz</a>
+            <a class="btn btn--outline" data-wa="Hi SHADEO! Which frames suit my face? I'll send a selfie." href="#" target="_blank" rel="noopener">Send a selfie</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/frames.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    Shadeo.onReady(() => {
+      const { $, Art, esc, PRODUCTS } = Shadeo;
+      const FACES = [
+        ['oval', 'Oval', 'Longer than wide, with a soft jawline.', 'Almost anything works. Lucky you! Go bold with oversized frames or aviators.', ['aviator', 'oversized', 'square']],
+        ['round', 'Round', 'About as wide as it is long, with soft curves.', 'Angular frames add definition and make your face look longer.', ['square', 'rectangle', 'cat-eye']],
+        ['square', 'Square', 'Strong jaw and a wide forehead.', 'Round and oval frames soften strong angles.', ['round', 'aviator', 'oversized']],
+        ['heart', 'Heart', 'Wider forehead, narrower chin.', 'Light or bottom-heavy frames balance a wider forehead.', ['aviator', 'round', 'cat-eye']],
+        ['diamond', 'Diamond', 'Narrow forehead and jaw, wide cheekbones.', 'Cat eye and oval frames highlight your cheekbones.', ['cat-eye', 'round', 'oversized']],
+      ];
+      const label = (id) => (window.SHADEO_SHAPES.find((s) => s.id === id) || {}).label;
+      $('#face-grid').innerHTML = FACES.map(([id, name, how, tip, shapes]) => {
+        const picks = PRODUCTS.filter((p) => p.faces && p.faces.includes(id)).slice(0, 3);
+        return `<article class="face-card">
+          <div class="face-card__top">${Art.face(id)}<div><h2 style="font-size:1.4rem;margin:0">${name}</h2><p>${esc(how)}</p></div></div>
+          <p><strong style="color:var(--ink)">Try:</strong> ${esc(tip)}</p>
+          <p><strong style="color:var(--ink)">Our picks:</strong> ${picks.map((p) => `<a href="product.html?p=${p.handle}">${esc(p.name)}</a>`).join(', ')}</p>
+          <div class="chips">${shapes.map((s) => `<a class="chip" href="shop.html?c=all&shape=${s}">${label(s)}</a>`).join('')}</div>
+        </article>`;
+      }).join('');
+    });
+  </script>
+</body>
+</html>

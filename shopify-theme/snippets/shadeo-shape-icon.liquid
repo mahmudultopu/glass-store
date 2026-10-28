@@ -1,0 +1,45 @@
+{%- comment -%}
+  Line drawing of a frame shape, used by the "Shop by frame shape" carousel
+  when no photo is uploaded.
+  Usage: {% render 'shadeo-shape-icon', shape: 'aviator' %}
+  Shapes: aviator, round, square, cat-eye, oversized, shield, rectangle
+{%- endcomment -%}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 52" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  {%- case shape -%}
+    {%- when 'aviator' -%}
+      <path d="M16 12 H52 Q54 30 42 40 Q30 47 21 36 Q14 26 16 12 Z"/>
+      <path d="M104 12 H68 Q66 30 78 40 Q90 47 99 36 Q106 26 104 12 Z"/>
+      <path d="M16 10 H104"/>
+      <path d="M52 16 Q60 13 68 16"/>
+    {%- when 'round' -%}
+      <circle cx="33" cy="27" r="17"/>
+      <circle cx="87" cy="27" r="17"/>
+      <path d="M50 25 Q60 17 70 25"/>
+      <path d="M16 24 L6 20 M104 24 L114 20"/>
+    {%- when 'square' -%}
+      <rect x="14" y="10" width="38" height="34" rx="4"/>
+      <rect x="68" y="10" width="38" height="34" rx="4"/>
+      <path d="M52 20 Q60 15 68 20"/>
+      <path d="M14 14 L5 12 M106 14 L115 12"/>
+    {%- when 'rectangle' -%}
+      <rect x="12" y="15" width="40" height="24" rx="3"/>
+      <rect x="68" y="15" width="40" height="24" rx="3"/>
+      <path d="M52 22 Q60 17 68 22"/>
+      <path d="M12 18 L4 16 M108 18 L116 16"/>
+    {%- when 'cat-eye' -%}
+      <path d="M10 12 Q32 6 52 16 Q50 40 31 40 Q14 38 10 12 Z"/>
+      <path d="M110 12 Q88 6 68 16 Q70 40 89 40 Q106 38 110 12 Z"/>
+      <path d="M52 19 Q60 15 68 19"/>
+    {%- when 'oversized' -%}
+      <rect x="6" y="5" width="48" height="42" rx="14"/>
+      <rect x="66" y="5" width="48" height="42" rx="14"/>
+      <path d="M54 18 Q60 14 66 18"/>
+    {%- when 'shield' -%}
+      <path d="M8 12 H112 Q114 30 102 39 Q82 47 66 31 H54 Q38 47 18 39 Q6 30 8 12 Z"/>
+      <path d="M8 10 H112"/>
+    {%- else -%}
+      <circle cx="33" cy="27" r="17"/>
+      <circle cx="87" cy="27" r="17"/>
+      <path d="M50 25 Q60 17 70 25"/>
+  {%- endcase -%}
+</svg>

@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SHADEO – Sunglasses &amp; Eyeglasses Online in Bangladesh</title>
+  <meta name="description" content="Shop premium polarized sunglasses, prescription eyeglasses & blue-light glasses. 100% UV400. Cash on Delivery & free delivery over Tk 3,000.">
+  <meta property="og:title" content="SHADEO – See the city differently">
+  <meta property="og:description" content="Premium sunglasses and eyeglasses designed for Bangladesh's sun. From Tk 1,990.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23111'/%3E%3Ccircle cx='16' cy='16' r='9' fill='%23F5A623'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="home">
+  <!-- Page: Homepage. Product rows, shape carousel and shop-the-look tiles are filled in by assets/js/pages/home.js.
+       Header, menus, cart drawer and footer are injected into #site-header / #site-footer by assets/js/app.js. -->
+  <div id="site-header"></div>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="page-width hero__inner">
+        <div>
+          <p class="eyebrow">New · The Monsoon Edit</p>
+          <h1>See the city <span>differently</span></h1>
+          <p class="hero__text">Premium sunglasses and eyeglasses, designed for Bangladesh's sun. 100% UV400 on every pair. From Tk 1,990.</p>
+          <div class="hero__ctas">
+            <a class="btn" href="shop.html?c=men">Shop Men</a>
+            <a class="btn btn--outline" href="shop.html?c=women">Shop Women</a>
+          </div>
+          <div class="hero__meta">
+            <span><i data-icon="truck"></i>Free delivery over Tk 3,000</span>
+            <span><i data-icon="shield"></i>Cash on Delivery</span>
+            <span><i data-icon="return"></i>7-day returns</span>
+          </div>
+        </div>
+        <div class="hero__visual" aria-hidden="true">
+          <div class="hero__ring"></div>
+          <div class="hero__sun"></div>
+          <div class="hero__glasses" id="hero-glasses"></div>
+          <div class="hero__badge"><strong>UV400</strong>Every<br>single pair</div>
+          <a class="hero__price" href="product.html?p=gulshan-aviator-polarized" tabindex="-1"><span class="muted">Bestseller</span><strong>Gulshan Aviator</strong>Tk 2,890</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <span>100% UV400</span><span>Polarized options</span><span>Cash on Delivery</span><span>Free delivery over Tk 3,000</span><span>7-day easy returns</span><span>Designed in Dhaka</span>
+        <span>100% UV400</span><span>Polarized options</span><span>Cash on Delivery</span><span>Free delivery over Tk 3,000</span><span>7-day easy returns</span><span>Designed in Dhaka</span>
+      </div>
+    </div>
+
+    <!-- Shop by shape -->
+    <section class="section">
+      <div class="page-width">
+        <div class="section-head">
+          <div><h2>Shop by frame shape</h2><p>Round face? Square jaw? Find the shape that's made for you.</p></div>
+          <div class="carousel-arrows">
+            <button class="arrow-btn" type="button" data-scroll="prev" aria-controls="shape-track" aria-label="Previous shapes"><span data-icon="left"></span></button>
+            <button class="arrow-btn" type="button" data-scroll="next" aria-controls="shape-track" aria-label="Next shapes"><span data-icon="right"></span></button>
+          </div>
+        </div>
+        <ul class="shapes" id="shape-track" role="list"></ul>
+      </div>
+    </section>
+
+    <!-- Bestsellers -->
+    <section class="section section--white">
+      <div class="page-width">
+        <div class="section-head">
+          <div><h2>Bestsellers</h2><p>The frames everyone keeps coming back for.</p></div>
+          <a class="link-arrow" href="shop.html?c=bestsellers">View all</a>
+        </div>
+        <ul class="row-scroll" id="bestsellers" role="list"></ul>
+      </div>
+    </section>
+
+    <!-- Campaign -->
+    <section class="section">
+      <div class="page-width">
+        <div class="campaign">
+          <div class="campaign__content">
+            <p class="eyebrow" style="color:var(--amber)">Limited drop</p>
+            <h2>The Monsoon Edit</h2>
+            <p>Moody tints, bold acetate, zero glare. Made for grey skies and golden breaks.</p>
+            <a class="btn btn--amber" href="shop.html?c=new">Shop now</a>
+          </div>
+          <div class="campaign__visual" aria-hidden="true"><div class="campaign__rain"></div><div id="campaign-art"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- New arrivals -->
+    <section class="section section--white">
+      <div class="page-width">
+        <div class="section-head">
+          <div><h2>Just landed</h2><p>New shapes, new tints, new colors.</p></div>
+          <a class="link-arrow" href="shop.html?c=new">Shop new</a>
+        </div>
+        <ul class="row-scroll" id="new-arrivals" role="list"></ul>
+      </div>
+    </section>
+
+    <!-- Find your frame -->
+    <section class="section">
+      <div class="page-width">
+        <div class="section-head section-head--center">
+          <h2>Find your perfect frame</h2>
+          <p>Not sure what suits you? We've got you.</p>
+        </div>
+        <ul class="icon-grid" role="list">
+          <li class="feature-card">
+            <span class="icon-circle" data-icon="quiz"></span>
+            <h3>Take the 60-second quiz</h3>
+            <p>Answer 5 quick questions about your face shape and style. Get frames picked just for you.</p>
+            <a class="btn" href="quiz.html">Start the quiz</a>
+          </li>
+          <li class="feature-card">
+            <span class="icon-circle" data-icon="eye"></span>
+            <h3>Face shape guide</h3>
+            <p>Oval, round, square or heart? See which frame shapes flatter you most.</p>
+            <a class="btn btn--outline" href="face-shapes.html">Read the guide</a>
+          </li>
+          <li class="feature-card">
+            <span class="icon-circle" data-icon="chat"></span>
+            <h3>Ask a stylist</h3>
+            <p>Send us a selfie on WhatsApp and our team will suggest 3 frames that suit you. Free.</p>
+            <a class="btn btn--outline" data-wa="Hi SHADEO! Can you help me choose frames? I'll send a selfie." href="#" target="_blank" rel="noopener">Chat on WhatsApp</a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Reviews CTA (real reviews will replace this once customers post them) -->
+    <section class="section section--tight">
+      <div class="page-width">
+        <div class="reviews-cta">
+          <div>
+            <div class="stars" aria-hidden="true"><span data-icon="star"></span><span data-icon="star"></span><span data-icon="star"></span><span data-icon="star"></span><span data-icon="star"></span></div>
+            <h2 style="margin-top:14px">Be one of our first 100 faces</h2>
+            <p class="muted">We're new, and we'd rather show you real reviews than made-up ones. Order, wear, and tell everyone what you honestly think.</p>
+            <a class="btn" href="shop.html?c=bestsellers">Shop bestsellers</a>
+          </div>
+          <ol class="steps">
+            <li><div><strong>Order your frames</strong><br><span class="muted">Pay by Cash on Delivery, bKash, Nagad or card.</span></div></li>
+            <li><div><strong>Post a photo review</strong><br><span class="muted">Tag @shadeo.bd or send it on WhatsApp.</span></div></li>
+            <li><div><strong>Get 100 points (Tk 100 off)</strong><br><span class="muted">Use them on your next pair.</span></div></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Shop the look -->
+    <section class="section">
+      <div class="page-width">
+        <div class="section-head">
+          <div><h2>Shop the look</h2><p>Tag @shadeo.bd for a chance to be featured.</p></div>
+          <a class="link-arrow" href="https://instagram.com/shadeo.bd" target="_blank" rel="noopener">Follow @shadeo.bd</a>
+        </div>
+        <ul class="look-grid" id="look-grid" role="list"></ul>
+      </div>
+    </section>
+
+    <!-- Trust strip -->
+    <section class="section section--dark section--tight">
+      <div class="page-width">
+        <ul class="trust" role="list">
+          <li><span class="trust__icon" data-icon="truck"></span><div><strong>Free delivery</strong><span>On orders over Tk 3,000</span></div></li>
+          <li><span class="trust__icon" data-icon="return"></span><div><strong>7-day returns</strong><span>Easy, no-drama exchanges</span></div></li>
+          <li><span class="trust__icon" data-icon="sun"></span><div><strong>100% UV400</strong><span>Full UVA + UVB protection</span></div></li>
+          <li><span class="trust__icon" data-icon="lock"></span><div><strong>Pay your way</strong><span>COD, bKash, Nagad &amp; cards</span></div></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Why SHADEO -->
+    <section class="section why">
+      <div class="page-width">
+        <div class="section-head section-head--center">
+          <h2>Why SHADEO</h2>
+          <p>Premium eyewear without the premium markup.</p>
+        </div>
+        <ul class="icon-grid" role="list">
+          <li><span class="icon-circle" data-icon="award"></span><h3>Premium build</h3><p>Hand-polished acetate and lightweight metal frames with sturdy spring hinges, made to last for years.</p></li>
+          <li><span class="icon-circle" data-icon="sun"></span><h3>Real protection</h3><p>Every lens blocks 100% of UVA and UVB rays. Polarized options cut glare on roads, water and screens.</p></li>
+          <li><span class="icon-circle" data-icon="sparkle"></span><h3>Fair prices</h3><p>We design in-house and sell direct, so you get boutique quality at a fraction of the price.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="section section--amber newsletter">
+      <div class="page-width">
+        <h2>Get 10% off your first pair</h2>
+        <p>Join the SHADEO list for new drops, private sales and style tips. No spam, just good frames.</p>
+        <form class="inline-form" data-signup>
+          <label class="visually-hidden" for="news-email">Email or phone</label>
+          <input id="news-email" type="text" placeholder="Email or phone number" required>
+          <button class="btn" type="submit">Unlock 10%</button>
+        </form>
+        <p class="form-success" hidden></p>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/frames.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/pages/home.js"></script>
+</body>
+</html>

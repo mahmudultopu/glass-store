@@ -1,0 +1,28 @@
+{%- comment -%}
+  SHADEO free-delivery progress bar for the cart drawer.
+  Render inside snippets/cart-drawer.liquid (see 01-THEME-SETUP.md, step 5):
+    {% render 'shadeo-free-shipping-bar' %}
+
+  Keep threshold_bdt the same as your free-shipping rate in Settings → Shipping and delivery.
+{%- endcomment -%}
+{%- liquid
+  assign threshold_bdt = 3000
+  assign threshold = threshold_bdt | times: 100
+  assign remaining = threshold | minus: cart.total_price
+  assign percent = cart.total_price | times: 100 | divided_by: threshold
+  if percent > 100
+    assign percent = 100
+  endif
+-%}
+{%- if cart.item_count > 0 -%}
+  <div class="shadeo-ship-bar{% if remaining <= 0 %} shadeo-ship-bar--done{% endif %}">
+    {%- if remaining > 0 -%}
+      <p>You're <strong>{{ remaining | money }}</strong> away from <strong>FREE delivery</strong></p>
+    {%- else -%}
+      <p>Nice! You've unlocked <strong>FREE delivery</strong></p>
+    {%- endif -%}
+    <div class="shadeo-ship-bar__track" role="progressbar" aria-label="Progress to free delivery" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ percent }}">
+      <span style="width: {{ percent }}%;"></span>
+    </div>
+  </div>
+{%- endif -%}

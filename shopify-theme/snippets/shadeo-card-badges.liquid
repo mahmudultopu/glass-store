@@ -1,0 +1,19 @@
+{%- comment -%}
+  SHADEO product card badges, driven by product tags (lowercase):
+    polarized  → "Polarized"
+    new        → "New"
+    bestseller → "Bestseller"
+
+  Render inside snippets/card-product.liquid, inside the <div class="card__badge ..."> element
+  (see 01-THEME-SETUP.md, step 6):
+    {% render 'shadeo-card-badges', product: card_product %}
+{%- endcomment -%}
+{%- if product.tags contains 'new' -%}
+  <span class="badge shadeo-badge shadeo-badge--new">New</span>
+{%- endif -%}
+{%- if product.tags contains 'bestseller' -%}
+  <span class="badge shadeo-badge">Bestseller</span>
+{%- endif -%}
+{%- if product.tags contains 'polarized' -%}
+  <span class="badge shadeo-badge shadeo-badge--polarized">Polarized</span>
+{%- endif -%}

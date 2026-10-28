@@ -1,0 +1,50 @@
+{%- comment -%}
+  SHADEO delivery estimate + low-stock badge.
+
+  Add a "Custom liquid" block to the product page (place it under Buy buttons) and paste:
+    {% render 'shadeo-delivery-stock', product: product, section_id: section.id %}
+
+  Edit the numbers below to match your courier. Fridays are skipped as delivery days,
+  and orders after the cut-off hour count from the next day.
+{%- endcomment -%}
+{%- liquid
+  assign dhaka_days = '1-2'
+  assign outside_days = '2-4'
+  assign cutoff_hour = 15
+  assign low_stock_threshold = 5
+  assign form_id = 'product-form-' | append: section_id
+-%}
+<div
+  class="shadeo-delivery"
+  data-shadeo-delivery
+  data-form="{{ form_id }}"
+  data-cutoff-hour="{{ cutoff_hour }}"
+  data-low-stock="{{ low_stock_threshold }}"
+>
+  <p class="shadeo-stock" data-shadeo-stock hidden></p>
+  <div class="shadeo-delivery__row">
+    {% render 'shadeo-icon', icon: 'truck' %}
+    <span>Inside Dhaka: get it <strong data-shadeo-eta="{{ dhaka_days }}">in {{ dhaka_days }} days</strong></span>
+  </div>
+  <div class="shadeo-delivery__row">
+    {% render 'shadeo-icon', icon: 'clock' %}
+    <span>Outside Dhaka: get it <strong data-shadeo-eta="{{ outside_days }}">in {{ outside_days }} days</strong></span>
+  </div>
+  <div class="shadeo-delivery__row">
+    {% render 'shadeo-icon', icon: 'return' %}
+    <span>7-day easy returns · Cash on Delivery available</span>
+  </div>
+
+  <script type="application/json" data-shadeo-stock-data>
+    {
+      {%- assign first = true -%}
+      {%- for variant in product.variants -%}
+        {%- if variant.inventory_management == 'shopify' and variant.inventory_policy == 'deny' -%}
+          {%- unless first %},{% endunless -%}
+          "{{ variant.id }}": {{ variant.inventory_quantity }}
+          {%- assign first = false -%}
+        {%- endif -%}
+      {%- endfor -%}
+    }
+  </script>
+</div>

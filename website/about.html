@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About SHADEO – Bangladeshi Eyewear Brand</title>
+  <meta name="description" content="Premium sunglasses and eyeglasses designed in Dhaka. Real UV400 protection, honest prices, real people on WhatsApp.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23111'/%3E%3Ccircle cx='16' cy='16' r='9' fill='%23F5A623'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="about">
+  <!-- Page: About page: brand story, promise and how SHADEO works.
+       Header, menus, cart drawer and footer are injected into #site-header / #site-footer by assets/js/app.js. -->
+  <div id="site-header"></div>
+  <main id="main">
+    <section class="section">
+      <div class="page-width two-col">
+        <div>
+          <p class="eyebrow">About SHADEO</p>
+          <h1 style="font-size:clamp(2.4rem,6vw,4.4rem)">We make seeing look good.</h1>
+          <p class="hero__text">SHADEO started with a simple frustration. In Bangladesh, you either paid a fortune for imported brand-name sunglasses, or bought cheap pairs that broke in a month and didn't really protect your eyes.</p>
+          <p>We knew there had to be a better way. So we started designing our own frames, with premium materials, real UV400 protection and honest prices. We skip the middlemen, the big retail markups and the fake "original" tags, and sell directly to you.</p>
+          <a class="btn" href="shop.html?c=all">Shop the collection</a>
+        </div>
+        <div class="big-visual" id="about-art" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <section class="section section--dark">
+      <div class="page-width">
+        <div class="section-head section-head--center"><h2>Our promise</h2></div>
+        <ul class="icon-grid" role="list" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+          <li class="feature-card" style="background:transparent;border-color:rgba(250,248,245,.2)"><span class="icon-circle" data-icon="sun"></span><h3>Real protection</h3><p style="color:rgba(250,248,245,.75)">Every lens blocks 100% of UVA and UVB rays. No exceptions.</p></li>
+          <li class="feature-card" style="background:transparent;border-color:rgba(250,248,245,.2)"><span class="icon-circle" data-icon="award"></span><h3>Built to last</h3><p style="color:rgba(250,248,245,.75)">Acetate, stainless steel and TR90 frames with strong hinges, backed by a 6-month warranty.</p></li>
+          <li class="feature-card" style="background:transparent;border-color:rgba(250,248,245,.2)"><span class="icon-circle" data-icon="coin"></span><h3>Honest prices</h3><p style="color:rgba(250,248,245,.75)">Boutique quality from Tk 1,990, because we sell direct.</p></li>
+          <li class="feature-card" style="background:transparent;border-color:rgba(250,248,245,.2)"><span class="icon-circle" data-icon="chat"></span><h3>Real people</h3><p style="color:rgba(250,248,245,.75)">Questions? Our team answers on WhatsApp, 7 days a week.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="page-width two-col">
+        <div class="big-visual" id="about-art-2" style="background:var(--ink)" aria-hidden="true"></div>
+        <div>
+          <p class="eyebrow">How we work</p>
+          <h2>From sketch to your face</h2>
+          <ol class="steps" style="margin-top:20px">
+            <li><div><strong>Designed in Dhaka</strong><br><span class="muted">Every shape starts with Bangladeshi faces, weather and style in mind.</span></div></li>
+            <li><div><strong>Made with premium materials</strong><br><span class="muted">Hand-polished acetate, stainless steel and flexible TR90.</span></div></li>
+            <li><div><strong>Checked before it ships</strong><br><span class="muted">Hinges, lenses and finish are inspected on every pair.</span></div></li>
+            <li><div><strong>Delivered to your door</strong><br><span class="muted">Check it before you pay with Cash on Delivery.</span></div></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--amber newsletter">
+      <div class="page-width">
+        <h2>Designed in Dhaka. Worn everywhere.</h2>
+        <p>Find the frame that's made for you.</p>
+        <a class="btn" href="quiz.html">Take the frame quiz</a>
+      </div>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/frames.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    Shadeo.onReady(() => {
+      Shadeo.$('#about-art').innerHTML = Shadeo.Art.frame({ shape: 'square', material: 'acetate', frame: '#111111', lens: '#2E3B2C' });
+      Shadeo.$('#about-art-2').innerHTML = Shadeo.Art.frame({ shape: 'round', material: 'metal', frame: '#F5A623', lens: '#5A3B22', gradient: true });
+    });
+  </script>
+</body>
+</html>

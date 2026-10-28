@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to Order Prescription Glasses Online – SHADEO</title>
+  <meta name="description" content="Pick a frame, choose your lenses, share your prescription, and get your glasses delivered in 5–7 days anywhere in Bangladesh.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23111'/%3E%3Ccircle cx='16' cy='16' r='9' fill='%23F5A623'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="prescription">
+  <!-- Page: Prescription guide: steps, lens prices and how to read a prescription.
+       Header, menus, cart drawer and footer are injected into #site-header / #site-footer by assets/js/app.js. -->
+  <div id="site-header"></div>
+  <main id="main">
+    <section class="section">
+      <div class="page-width two-col">
+        <div>
+          <p class="eyebrow">Prescription glasses</p>
+          <h1 style="font-size:clamp(2.2rem,6vw,4rem)">Your prescription, in style</h1>
+          <p class="hero__text">Complete prescription glasses from Tk 3,390, lenses and free anti-glare coating included. Delivered anywhere in Bangladesh in 5–7 days.</p>
+          <div class="hero__ctas"><a class="btn" href="shop.html?c=eyeglasses">Shop eyeglasses</a><a class="btn btn--outline" href="shop.html?c=prescription">Prescription sunglasses</a></div>
+        </div>
+        <div class="big-visual" id="rx-art" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <section class="section section--white">
+      <div class="page-width">
+        <div class="section-head section-head--center"><h2>4 easy steps</h2></div>
+        <ol class="process">
+          <li><h3>Pick your frame</h3><p>Browse eyeglasses, or any frame marked "Prescription-ready".</p></li>
+          <li><h3>Choose your lenses</h3><p>Clear single vision, blue-light, or tinted sun lenses. Anti-glare is free.</p></li>
+          <li><h3>Share your prescription</h3><p>Type it in on the product page, or send a photo on WhatsApp after ordering.</p></li>
+          <li><h3>Delivered to your door</h3><p>Our optician checks every prescription. Your glasses arrive in 5–7 days.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="page-width two-col" style="align-items:start">
+        <div>
+          <h2>Lens prices</h2>
+          <div class="table-wrap"><table class="table">
+            <thead><tr><th>Lens</th><th>Price</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Non-prescription</strong><br><span class="muted">Standard UV400 lenses</span></td><td>Included</td></tr>
+              <tr><td><strong>Blue-light filter</strong><br><span class="muted">No prescription</span></td><td>+ Tk 800</td></tr>
+              <tr><td><strong>Single vision: clear</strong><br><span class="muted">Near- or far-sighted</span></td><td>+ Tk 1,200</td></tr>
+              <tr><td><strong>Single vision + blue-light</strong></td><td>+ Tk 1,800</td></tr>
+              <tr><td><strong>Single vision: sun tint</strong><br><span class="muted">Prescription sunglasses</span></td><td>+ Tk 2,200</td></tr>
+            </tbody>
+          </table></div>
+          <p class="muted" style="font-size:.9rem">Blue-light frames (Padma, Motijheel) already include the blue-light filter.</p>
+        </div>
+        <div>
+          <h2>How to read your prescription</h2>
+          <div class="table-wrap"><table class="table">
+            <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><strong>OD / OS</strong></td><td>Right eye / left eye</td></tr>
+              <tr><td><strong>SPH</strong></td><td>Sphere: lens power. Minus (−) = short-sighted, plus (+) = long-sighted</td></tr>
+              <tr><td><strong>CYL</strong></td><td>Cylinder: corrects astigmatism (may be blank)</td></tr>
+              <tr><td><strong>AXIS</strong></td><td>Direction of the cylinder, 0–180 (only if CYL is given)</td></tr>
+              <tr><td><strong>PD</strong></td><td>Pupillary distance: the space between your pupils in mm (usually 55–70)</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--white">
+      <div class="page-width prose" style="margin:0 auto">
+        <h2>Good to know</h2>
+        <ul>
+          <li>We currently make <strong>single-vision</strong> lenses (for near- or far-sightedness). Progressive and bifocal lenses are coming soon.</li>
+          <li>Your prescription should be less than 2 years old.</li>
+          <li>Need an eye test first? Visit any registered optometrist or eye hospital, then send us the prescription.</li>
+          <li>Prescription lenses are made to order, so they can't be returned for change of mind. If there's a lens defect or our mistake, we remake them free.</li>
+        </ul>
+        <div class="callout">Not sure about your numbers? <a data-wa="Hi SHADEO! Can you check my prescription before I order?" href="#" target="_blank" rel="noopener">Send us a photo on WhatsApp</a> and our optician will help.</div>
+      </div>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/frames.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    Shadeo.onReady(() => {
+      Shadeo.$('#rx-art').innerHTML = Shadeo.Art.frame({ shape: 'rectangle', material: 'acetate', frame: '#111111', lens: '#dfe7ee', clear: true });
+    });
+  </script>
+</body>
+</html>

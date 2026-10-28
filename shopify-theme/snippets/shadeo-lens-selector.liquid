@@ -1,0 +1,100 @@
+{%- comment -%}
+  SHADEO lens selector.
+
+  Add a "Custom liquid" block to the product page (Product information section) and paste:
+    {% render 'shadeo-lens-selector', product: product, section_id: section.id %}
+
+  - Shows only on products tagged "lens-selector".
+  - Lens options and prices come from a hidden product with the handle "lens-upgrade".
+    Each variant of that product is one lens option. Put "RX" in a variant's SKU
+    when that lens needs a prescription (e.g. LENS-RX-SV).
+  - Optional variant metafield custom.lens_note (single line text) shows a short
+    description under each lens name.
+  - The chosen lens and prescription are saved on the frame's cart line, and the
+    paid lens variant is added to the cart next to the frame (see shadeo.js).
+{%- endcomment -%}
+{%- assign lens_product = all_products['lens-upgrade'] -%}
+{%- if product.tags contains 'lens-selector' and lens_product.id -%}
+  {%- assign form_id = 'product-form-' | append: section_id -%}
+  <div class="shadeo-lens" data-shadeo-lens data-form="{{ form_id }}" data-product-title="{{ product.title | escape }}">
+    <p class="shadeo-lens__title h4">Choose your lenses</p>
+
+    <fieldset class="shadeo-lens__options">
+      <legend class="visually-hidden">Lens type</legend>
+
+      <label class="shadeo-lens__option">
+        <input type="radio" name="properties[Lens]" value="Non-prescription" form="{{ form_id }}" data-rx="false" checked>
+        <span class="shadeo-lens__label">
+          <strong>Non-prescription</strong>
+          <small>Standard lenses with 100% UV400 protection</small>
+        </span>
+        <span class="shadeo-lens__price">Included</span>
+      </label>
+
+      {%- for variant in lens_product.variants -%}
+        {%- if variant.available -%}
+          {%- liquid
+            assign needs_rx = false
+            if variant.sku contains 'RX'
+              assign needs_rx = true
+            endif
+          -%}
+          <label class="shadeo-lens__option">
+            <input
+              type="radio"
+              name="properties[Lens]"
+              value="{{ variant.title | escape }}"
+              form="{{ form_id }}"
+              data-variant-id="{{ variant.id }}"
+              data-rx="{{ needs_rx }}"
+            >
+            <span class="shadeo-lens__label">
+              <strong>{{ variant.title }}</strong>
+              {%- if variant.metafields.custom.lens_note != blank -%}
+                <small>{{ variant.metafields.custom.lens_note }}</small>
+              {%- endif -%}
+            </span>
+            <span class="shadeo-lens__price">+{{ variant.price | money }}</span>
+          </label>
+        {%- endif -%}
+      {%- endfor -%}
+    </fieldset>
+
+    <div class="shadeo-rx" data-shadeo-rx hidden>
+      <p class="shadeo-rx__title">How would you like to share your prescription?</p>
+      <label class="shadeo-rx__mode">
+        <input type="radio" name="properties[Prescription]" value="Will send on WhatsApp" form="{{ form_id }}" checked disabled>
+        Send a photo of my prescription on WhatsApp after ordering
+      </label>
+      <label class="shadeo-rx__mode">
+        <input type="radio" name="properties[Prescription]" value="Entered below" form="{{ form_id }}" disabled>
+        Type it in now
+      </label>
+
+      <div class="shadeo-rx__fields" data-shadeo-rx-fields hidden>
+        <table class="shadeo-rx__table">
+          <thead>
+            <tr><th scope="col">Eye</th><th scope="col">SPH</th><th scope="col">CYL</th><th scope="col">AXIS</th></tr>
+          </thead>
+          <tbody>
+            {%- assign eyes = 'Right (OD),Left (OS)' | split: ',' -%}
+            {%- for eye in eyes -%}
+              {%- assign key = eye | split: ' ' | first -%}
+              <tr>
+                <th scope="row">{{ eye }}</th>
+                <td><input type="text" inputmode="decimal" name="properties[{{ key }} SPH]" form="{{ form_id }}" placeholder="-1.25" pattern="[+\-]?\d{1,2}(\.\d{1,2})?" data-shadeo-rx-field data-required="true" disabled aria-label="{{ eye }} SPH"></td>
+                <td><input type="text" inputmode="decimal" name="properties[{{ key }} CYL]" form="{{ form_id }}" placeholder="-0.50" pattern="[+\-]?\d{1,2}(\.\d{1,2})?" data-shadeo-rx-field disabled aria-label="{{ eye }} CYL"></td>
+                <td><input type="number" inputmode="numeric" name="properties[{{ key }} AXIS]" form="{{ form_id }}" placeholder="90" min="0" max="180" data-shadeo-rx-field disabled aria-label="{{ eye }} AXIS"></td>
+              </tr>
+            {%- endfor -%}
+          </tbody>
+        </table>
+        <label class="shadeo-rx__pd">
+          PD (pupillary distance)
+          <input type="number" inputmode="numeric" name="properties[PD]" form="{{ form_id }}" placeholder="63" min="45" max="80" data-shadeo-rx-field data-required="true" disabled>
+        </label>
+        <p class="shadeo-rx__help">Don't know your PD? Leave the prescription to us: choose "Send a photo on WhatsApp" and our optician will check it before your lenses are made.</p>
+      </div>
+    </div>
+  </div>
+{%- endif -%}

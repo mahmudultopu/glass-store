@@ -1,0 +1,26 @@
+{%- comment -%}
+  SHADEO sticky add-to-cart bar (mobile only).
+  Appears once the main "Add to cart" button scrolls off screen.
+
+  Add a "Custom liquid" block to the product page and paste:
+    {% render 'shadeo-sticky-atc', product: product, section_id: section.id %}
+{%- endcomment -%}
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+<div
+  class="shadeo-sticky-atc"
+  data-shadeo-sticky-atc
+  data-form="product-form-{{ section_id }}"
+  data-price-source="price-{{ section_id }}"
+  data-label="Add to cart"
+>
+  {%- if product.featured_media -%}
+    {{ product.featured_media | image_url: width: 120 | image_tag: loading: 'lazy', alt: product.title }}
+  {%- endif -%}
+  <div class="shadeo-sticky-atc__info">
+    <p class="shadeo-sticky-atc__title">{{ product.title }}</p>
+    <div class="shadeo-sticky-atc__price" data-shadeo-sticky-price>{{ current_variant.price | money }}</div>
+  </div>
+  <button type="button" class="button" data-shadeo-sticky-btn {% unless current_variant.available %}disabled{% endunless %}>
+    {%- if current_variant.available -%}Add to cart{%- else -%}Sold out{%- endif -%}
+  </button>
+</div>

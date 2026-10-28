@@ -1,0 +1,288 @@
+/* =========================================================
+   SHADEO store data
+   Edit this file to change products, prices, lenses and contact details.
+   Prices are in Taka (BDT).
+   ========================================================= */
+window.SHADEO_CONFIG = {
+  brand: 'SHADEO',
+  whatsapp: '8801XXXXXXXXX', // ← your WhatsApp number: country code + number, digits only
+  phone: '+880 1XXX-XXXXXX',
+  email: 'hello@shadeo.com.bd',
+  address: 'House 00, Road 00, Gulshan 1, Dhaka 1212',
+  instagram: 'https://instagram.com/shadeo.bd',
+  facebook: 'https://facebook.com/shadeo.bd',
+  tiktok: 'https://tiktok.com/@shadeo.bd',
+  freeShippingOver: 3000,
+  shipping: { inside: 70, outside: 130 },
+  bundle: { minFrames: 2, percent: 15 },
+  codes: {
+    WELCOME10: { percent: 10, label: 'Welcome 10% off' },
+    COMEBACK10: { percent: 10, label: '10% off' },
+    LAUNCH15: { percent: 15, label: 'Launch week 15% off' },
+  },
+  deliveryDays: { inside: [1, 2], outside: [2, 4], prescription: [5, 7] },
+  cutoffHour: 15,
+  lowStockAt: 5,
+  upsellHandle: 'shadeo-cleaning-kit',
+};
+
+window.SHADEO_LENSES = [
+  { id: 'none', name: 'Non-prescription', note: 'Standard lenses with 100% UV400 protection', price: 0, rx: false },
+  { id: 'bl', name: 'Blue-Light Filter', note: 'Cuts screen glare and eye strain, no prescription', price: 800, rx: false },
+  { id: 'sv', name: 'Single Vision: Clear', note: 'For near- or far-sightedness, free anti-glare', price: 1200, rx: true },
+  { id: 'svbl', name: 'Single Vision + Blue-Light', note: 'Your prescription + screen protection', price: 1800, rx: true },
+  { id: 'sun', name: 'Single Vision: Sun Tint', note: 'Your prescription as sunglasses, UV400', price: 2200, rx: true },
+];
+
+/*
+  Product fields
+  - type: Sunglasses | Eyeglasses | Blue Light Glasses | Accessories
+  - tags: men, women, polarized, blue-light, gradient, mirrored, new, bestseller, lens-selector
+  - colors: name + frame hex + lens hex (+ clear for optical lenses)
+  - size: [lens, bridge, temple, frameWidth] in mm
+*/
+window.SHADEO_PRODUCTS = [
+  {
+    handle: 'gulshan-aviator-polarized', name: 'Gulshan', style: 'Aviator Polarized',
+    type: 'Sunglasses', shape: 'aviator', material: 'metal',
+    tags: ['men', 'women', 'polarized', 'bestseller'],
+    price: 2890, compare: 3490, stock: 14,
+    colors: [
+      { name: 'Gold / Green', frame: '#C9A227', lens: '#3D5A3A' },
+      { name: 'Silver / Grey', frame: '#A9AEB5', lens: '#3A3F47' },
+      { name: 'Black / Black', frame: '#1A1A1A', lens: '#262626' },
+    ],
+    size: [58, 15, 145, 140], fit: 'Medium–Large', weight: 22,
+    tagline: 'The aviator, upgraded. Polarized lenses, featherweight metal, all-day comfort.',
+    description: "Classic pilot lines, built for Dhaka traffic and Cox's Bazar glare. The Gulshan pairs a slim stainless-steel frame with polarized lenses that cut reflections off roads, water and car windows, so you see sharper and squint less.",
+    features: ['Polarized lenses, 100% UV400 protection', 'Lightweight stainless steel, 22 g', 'Adjustable silicone nose pads', 'Spring hinges for a comfortable fit', 'Includes a SHADEO case + microfiber cloth'],
+    faces: ['oval', 'square', 'heart'],
+  },
+  {
+    handle: 'coxs-oversized', name: "Cox's", style: 'Oversized',
+    type: 'Sunglasses', shape: 'oversized', material: 'acetate',
+    tags: ['women', 'gradient', 'new'],
+    price: 2490, stock: 22,
+    colors: [
+      { name: 'Black', frame: '#141414', lens: '#202020', gradient: true },
+      { name: 'Tortoise', frame: '#6B3E1F', lens: '#3E2A1E', gradient: true },
+      { name: 'Milky Rose', frame: '#E5B4AC', lens: '#6E4E4A', gradient: true },
+    ],
+    size: [56, 19, 145, 146], fit: 'Large', weight: 31,
+    tagline: 'Big frames. Bigger energy.',
+    description: "Go big or go home. The Cox's is our statement frame: thick, glossy acetate with a soft gradient lens that fades from dark to light. It covers more of your face from sun, wind and paparazzi (or your cousin's phone camera).",
+    features: ['Gradient lenses, 100% UV400', 'Hand-polished acetate frame', '5-barrel metal hinges', 'Includes a SHADEO case + microfiber cloth'],
+    faces: ['round', 'oval', 'heart'],
+  },
+  {
+    handle: 'kuakata-cat-eye', name: 'Kuakata', style: 'Cat Eye',
+    type: 'Sunglasses', shape: 'cat-eye', material: 'acetate',
+    tags: ['women', 'bestseller'],
+    price: 2690, stock: 4,
+    colors: [
+      { name: 'Black', frame: '#141414', lens: '#2A2A2A' },
+      { name: 'Tortoise', frame: '#7A4620', lens: '#4A3322' },
+      { name: 'Cherry', frame: '#7B1E2B', lens: '#3B2326' },
+    ],
+    size: [53, 18, 140, 138], fit: 'Medium', weight: 27,
+    tagline: 'Sunset-ready. Attitude included.',
+    description: 'Lifted corners, bold acetate, and a little bit of drama. The Kuakata frames your face like golden hour frames the sea. Pair it with a saree, a kurti or a T-shirt; it works with everything.',
+    features: ['100% UV400 lenses', 'Premium acetate, hand-polished', 'Metal-core temples for a secure fit', 'Includes a SHADEO case + microfiber cloth'],
+    faces: ['square', 'round', 'oval', 'diamond'],
+  },
+  {
+    handle: 'sundarban-shield-sport', name: 'Sundarban', style: 'Shield Sport',
+    type: 'Sunglasses', shape: 'shield', material: 'tr90',
+    tags: ['men', 'polarized', 'mirrored', 'new'],
+    price: 3190, stock: 18,
+    colors: [
+      { name: 'White / Blue Mirror', frame: '#EDEDED', lens: '#2F6FD6', mirror: true },
+      { name: 'Black / Fire Mirror', frame: '#161616', lens: '#E4572E', mirror: true },
+    ],
+    size: [140, 0, 128, 142], fit: 'Medium–Large', weight: 26,
+    tagline: 'One lens. Zero glare. Built to move.',
+    description: 'Cycling at sunrise, a long drive to Sylhet, cricket on the weekend: the Sundarban wraps your view in one polarized mirrored shield. The flexible TR90 frame grips without pinching and survives being thrown in a bag.',
+    features: ['Polarized mirrored shield lens, UV400', 'Flexible, near-unbreakable TR90 frame', 'Non-slip rubber nose pad and temple tips', 'Includes a sport strap'],
+    faces: ['oval', 'square', 'heart'],
+  },
+  {
+    handle: 'sajek-round', name: 'Sajek', style: 'Round Eyeglasses',
+    type: 'Eyeglasses', shape: 'round', material: 'metal',
+    tags: ['men', 'women', 'lens-selector', 'bestseller'],
+    price: 2290, stock: 30,
+    colors: [
+      { name: 'Gold', frame: '#C9A227', lens: '#dfe7ee', clear: true },
+      { name: 'Black', frame: '#1A1A1A', lens: '#dfe7ee', clear: true },
+      { name: 'Silver', frame: '#A9AEB5', lens: '#dfe7ee', clear: true },
+    ],
+    size: [49, 20, 145, 132], fit: 'Medium', weight: 16,
+    tagline: 'Soft round lines for sharp minds.',
+    description: 'Inspired by misty mornings in the hills, the Sajek is a thin metal round frame that looks smart at the office and effortless on weekends. Choose non-prescription, blue-light, or your own prescription lenses below.',
+    features: ['Ultra-light metal frame, 16 g', 'Adjustable nose pads', 'Prescription-ready: single vision, blue-light or sun tint', 'Free anti-glare coating on prescription lenses'],
+    faces: ['square', 'heart', 'diamond'],
+  },
+  {
+    handle: 'padma-square-blue-light', name: 'Padma', style: 'Square Blue-Light',
+    type: 'Blue Light Glasses', shape: 'square', material: 'tr90',
+    tags: ['men', 'women', 'blue-light', 'lens-selector'],
+    price: 1990, compare: 2490, stock: 40,
+    colors: [
+      { name: 'Clear', frame: '#C9D2DC', lens: '#cfe0f5', clear: true },
+      { name: 'Black', frame: '#1A1A1A', lens: '#cfe0f5', clear: true },
+      { name: 'Navy', frame: '#1F2A44', lens: '#cfe0f5', clear: true },
+    ],
+    size: [52, 18, 142, 136], fit: 'Medium', weight: 18,
+    tagline: 'Your screen-time bodyguard.',
+    description: '8 hours on a laptop, 3 on your phone, 1 on Netflix: your eyes deserve a break. The Padma comes with blue-light filter lenses that cut harsh screen glare. The flexible TR90 frame bends instead of breaking. Add your prescription if you need one.',
+    features: ['Blue-light filter lenses with anti-glare (included)', 'Flexible TR90 frame, 18 g', 'Works with or without a prescription', 'Looks great on video calls'],
+    faces: ['round', 'oval'],
+    includedLens: 'bl',
+  },
+  {
+    handle: 'sylhet-rectangle', name: 'Sylhet', style: 'Rectangle Eyeglasses',
+    type: 'Eyeglasses', shape: 'rectangle', material: 'acetate',
+    tags: ['men', 'lens-selector', 'new'],
+    price: 2190, stock: 25,
+    colors: [
+      { name: 'Black', frame: '#141414', lens: '#dfe7ee', clear: true },
+      { name: 'Tortoise', frame: '#6B3E1F', lens: '#dfe7ee', clear: true },
+      { name: 'Grey Crystal', frame: '#8E959C', lens: '#dfe7ee', clear: true },
+    ],
+    size: [54, 17, 145, 140], fit: 'Medium–Large', weight: 24,
+    tagline: 'Boardroom ready. Weekend approved.',
+    description: 'A clean rectangle in thick acetate that gives your face structure without trying too hard. The Sylhet is our go-to frame for everyday prescription wear.',
+    features: ['Premium acetate, hand-polished', 'Spring hinges', 'Prescription-ready', 'Free anti-glare coating on prescription lenses'],
+    faces: ['round', 'oval'],
+  },
+  {
+    handle: 'dhanmondi-round-sun', name: 'Dhanmondi', style: 'Round Sunglasses',
+    type: 'Sunglasses', shape: 'round', material: 'metal',
+    tags: ['men', 'women', 'bestseller'],
+    price: 2390, stock: 16,
+    colors: [
+      { name: 'Gold / Brown', frame: '#C9A227', lens: '#5A3B22' },
+      { name: 'Black / Green', frame: '#1A1A1A', lens: '#2F4A33' },
+    ],
+    size: [50, 21, 145, 134], fit: 'Medium', weight: 18,
+    tagline: 'Lake-side cool, every day.',
+    description: 'Thin metal, perfectly round lenses, and a vintage keyhole bridge. The Dhanmondi is the easy-going pair you grab for a walk around the lake, a café afternoon, or a road trip.',
+    features: ['100% UV400 lenses', 'Lightweight metal frame', 'Keyhole bridge with soft nose pads', 'Includes a SHADEO case + microfiber cloth'],
+    faces: ['square', 'heart', 'diamond'],
+  },
+  {
+    handle: 'uttara-square-polarized', name: 'Uttara', style: 'Square Polarized',
+    type: 'Sunglasses', shape: 'square', material: 'acetate',
+    tags: ['men', 'polarized'],
+    price: 2590, stock: 12,
+    colors: [
+      { name: 'Matte Black / G15', frame: '#1C1C1C', lens: '#2E3B2C' },
+      { name: 'Tortoise / Brown', frame: '#6B3E1F', lens: '#4A3020' },
+    ],
+    size: [54, 18, 145, 141], fit: 'Medium–Large', weight: 29,
+    tagline: 'Square jaw energy, polarized.',
+    description: 'A bold everyday square with polarized lenses for clear, glare-free driving. Thick acetate and a flat brow line give it a confident, modern look.',
+    features: ['Polarized lenses, UV400', 'Thick acetate frame', 'Metal-core temples', 'Includes a SHADEO case + microfiber cloth'],
+    faces: ['round', 'oval'],
+  },
+  {
+    handle: 'bandarban-aviator-gradient', name: 'Bandarban', style: 'Aviator Gradient',
+    type: 'Sunglasses', shape: 'aviator', material: 'metal',
+    tags: ['women', 'gradient'],
+    price: 2690, compare: 3190, stock: 9,
+    colors: [
+      { name: 'Rose Gold / Pink', frame: '#D4A59A', lens: '#9C5C66', gradient: true },
+      { name: 'Gold / Brown', frame: '#C9A227', lens: '#6A4426', gradient: true },
+    ],
+    size: [57, 15, 140, 138], fit: 'Medium', weight: 20,
+    tagline: 'Soft tint. Sharp style.',
+    description: 'A softer take on the aviator, with dreamy gradient lenses and a delicate rose-gold frame. Made for hill-station selfies and golden-hour rooftops.',
+    features: ['Gradient lenses, 100% UV400', 'Slim metal frame', 'Adjustable nose pads', 'Includes a SHADEO case + microfiber cloth'],
+    faces: ['oval', 'square', 'heart'],
+  },
+  {
+    handle: 'hatirjheel-oversized-square', name: 'Hatirjheel', style: 'Oversized Square',
+    type: 'Sunglasses', shape: 'oversized', material: 'acetate',
+    tags: ['women', 'new'],
+    price: 2790, stock: 11,
+    colors: [
+      { name: 'Ivory', frame: '#EFE8DA', lens: '#2E2E2E' },
+      { name: 'Jet Black', frame: '#0F0F0F', lens: '#1F1F1F' },
+    ],
+    size: [57, 18, 145, 147], fit: 'Large', weight: 33,
+    tagline: 'Night lights, big frames.',
+    description: 'Thick, glossy, unapologetically oversized. The Hatirjheel turns a plain outfit into a look. The ivory frame is our most photographed pair this season.',
+    features: ['100% UV400 lenses', 'Premium thick acetate', '5-barrel hinges', 'Includes a SHADEO case + microfiber cloth'],
+    faces: ['round', 'oval', 'heart'],
+  },
+  {
+    handle: 'motijheel-rectangle-blue-light', name: 'Motijheel', style: 'Rectangle Blue-Light',
+    type: 'Blue Light Glasses', shape: 'rectangle', material: 'metal',
+    tags: ['men', 'women', 'blue-light', 'lens-selector'],
+    price: 2090, stock: 3,
+    colors: [
+      { name: 'Gunmetal', frame: '#4A4F55', lens: '#cfe0f5', clear: true },
+      { name: 'Gold', frame: '#C9A227', lens: '#cfe0f5', clear: true },
+    ],
+    size: [53, 17, 145, 137], fit: 'Medium', weight: 15,
+    tagline: 'Office hours, sorted.',
+    description: 'A slim metal rectangle with blue-light filter lenses already included. Light enough to forget you are wearing it, sharp enough for your next presentation.',
+    features: ['Blue-light filter lenses with anti-glare (included)', 'Featherweight metal, 15 g', 'Adjustable nose pads', 'Prescription-ready'],
+    faces: ['round', 'oval'],
+    includedLens: 'bl',
+  },
+  {
+    handle: 'shadeo-cleaning-kit', name: 'Cleaning Kit', style: 'Spray + Cloth',
+    type: 'Accessories', accessory: 'kit', tags: [],
+    price: 390, stock: 60,
+    colors: [{ name: 'Standard', frame: '#111111', lens: '#F5A623' }],
+    tagline: 'Streak-free lenses in 5 seconds.',
+    description: 'A 30 ml anti-fog lens spray and an extra-large SHADEO microfiber cloth. Safe for all coatings.',
+    features: ['30 ml alcohol-free lens spray', 'Large microfiber cloth', 'Safe for anti-glare and polarized lenses'],
+  },
+  {
+    handle: 'shadeo-hard-case', name: 'Hard Case', style: 'Matte Black',
+    type: 'Accessories', accessory: 'case', tags: ['new'],
+    price: 590, stock: 45,
+    colors: [
+      { name: 'Matte Black', frame: '#1A1A1A', lens: '#F5A623' },
+      { name: 'Amber', frame: '#D98E14', lens: '#111111' },
+    ],
+    tagline: 'Survives bags, pockets and little siblings.',
+    description: 'A crush-resistant clamshell case with a soft lining and magnetic close. Fits every SHADEO frame, including oversized.',
+    features: ['Crush-resistant shell', 'Soft microfiber lining', 'Magnetic closure', 'Fits all SHADEO frames'],
+  },
+  {
+    handle: 'shadeo-sport-strap', name: 'Sport Strap', style: 'Adjustable',
+    type: 'Accessories', accessory: 'strap', tags: [],
+    price: 290, stock: 50,
+    colors: [{ name: 'Black', frame: '#1A1A1A', lens: '#F5A623' }],
+    tagline: 'Keep them on. Whatever you are doing.',
+    description: 'An adjustable silicone-ended strap that keeps sunglasses secure while cycling, running or on a boat.',
+    features: ['Adjustable length', 'Non-slip silicone ends', 'Floats in water'],
+  },
+];
+
+window.SHADEO_CATEGORIES = {
+  all: { title: 'Shop All', desc: 'Every SHADEO frame and accessory in one place.' },
+  sunglasses: { title: 'Sunglasses', desc: "Real UV400 protection in aviators, oversized, cat eye, shield and square shapes. Built for Bangladesh's sun.", test: (p) => p.type === 'Sunglasses' },
+  men: { title: "Men's Sunglasses", desc: 'Aviators, squares and sport shields with polarized options.', test: (p) => p.type === 'Sunglasses' && p.tags.includes('men') },
+  women: { title: "Women's Sunglasses", desc: 'Cat eye, oversized and gradient styles that make every photo better.', test: (p) => p.type === 'Sunglasses' && p.tags.includes('women') },
+  polarized: { title: 'Polarized', desc: 'Cut the glare off roads, water and glass. Sharper colors, relaxed eyes.', test: (p) => p.tags.includes('polarized') },
+  eyeglasses: { title: 'Eyeglasses', desc: 'Prescription-ready frames. Pick your lenses on the product page; complete glasses from Tk 3,390.', test: (p) => p.type === 'Eyeglasses' || p.type === 'Blue Light Glasses' },
+  'blue-light': { title: 'Blue Light', desc: 'Screen glasses that cut harsh glare from laptops and phones, with or without prescription.', test: (p) => p.tags.includes('blue-light') },
+  prescription: { title: 'Prescription Sunglasses & Glasses', desc: 'Every frame here can be made with your prescription.', test: (p) => p.tags.includes('lens-selector') },
+  accessories: { title: 'Accessories', desc: 'Cases, cleaning kits and straps to keep your frames looking new.', test: (p) => p.type === 'Accessories' },
+  new: { title: 'New Arrivals', desc: 'The latest SHADEO drops. New shapes, new tints, new colors.', test: (p) => p.tags.includes('new') },
+  bestsellers: { title: 'Bestsellers', desc: 'The frames everyone keeps coming back for.', test: (p) => p.tags.includes('bestseller') },
+  sale: { title: 'Sale', desc: 'Premium frames, lower prices. Limited stock.', test: (p) => p.compare && p.compare > p.price },
+};
+
+window.SHADEO_SHAPES = [
+  { id: 'aviator', label: 'Aviator' },
+  { id: 'round', label: 'Round' },
+  { id: 'square', label: 'Square' },
+  { id: 'cat-eye', label: 'Cat Eye' },
+  { id: 'oversized', label: 'Oversized' },
+  { id: 'shield', label: 'Shield' },
+  { id: 'rectangle', label: 'Rectangle' },
+];

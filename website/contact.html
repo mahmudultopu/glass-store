@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact SHADEO: WhatsApp, Phone &amp; Email</title>
+  <meta name="description" content="Questions about frames, sizes or orders? WhatsApp SHADEO. We reply within 1 hour, 7 days a week.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23111'/%3E%3Ccircle cx='16' cy='16' r='9' fill='%23F5A623'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="contact">
+  <!-- Page: Contact page. The form opens WhatsApp with the message pre-filled.
+       Header, menus, cart drawer and footer are injected into #site-header / #site-footer by assets/js/app.js. -->
+  <div id="site-header"></div>
+  <main id="main">
+    <section class="page-hero">
+      <div class="page-width">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> / <span>Contact</span></nav>
+        <h1>Talk to us</h1>
+        <p>The fastest way to reach us is WhatsApp. We reply within 1 hour, 10 AM – 10 PM, 7 days a week.</p>
+      </div>
+    </section>
+    <section class="section">
+      <div class="page-width two-col" style="align-items:start">
+        <div class="contact-cards">
+          <a class="contact-card" data-wa="Hi SHADEO! I have a question." href="#" target="_blank" rel="noopener"><span class="icon-circle" style="background:#25D366;color:#fff" data-icon="chat"></span><div><strong>WhatsApp</strong><span data-cfg="phone"></span></div></a>
+          <a class="contact-card" id="call-link" href="#"><span class="icon-circle" data-icon="phone"></span><div><strong>Call us</strong><span data-cfg="phone"></span></div></a>
+          <a class="contact-card" id="mail-link" href="#"><span class="icon-circle" data-icon="mail"></span><div><strong>Email</strong><span data-cfg="email"></span></div></a>
+          <div class="contact-card"><span class="icon-circle" data-icon="pin"></span><div><strong>Office</strong><span data-cfg="address"></span></div></div>
+        </div>
+        <div>
+          <h2 style="font-size:1.4rem">Send a message</h2>
+          <form class="form" id="contact-form">
+            <div class="form-row form-row--2">
+              <div class="field"><label for="c-name">Name</label><input id="c-name" required autocomplete="name"></div>
+              <div class="field"><label for="c-phone">Mobile number</label><input id="c-phone" type="tel" required autocomplete="tel" placeholder="01XXXXXXXXX"></div>
+            </div>
+            <div class="field"><label for="c-topic">Topic</label>
+              <select id="c-topic"><option>Choosing a frame</option><option>An existing order</option><option>Prescription</option><option>Returns &amp; warranty</option><option>Wholesale / corporate</option><option>Something else</option></select>
+            </div>
+            <div class="field"><label for="c-msg">Message</label><textarea id="c-msg" required></textarea></div>
+            <button class="btn" type="submit">Send on WhatsApp</button>
+            <p class="muted" style="font-size:.82rem;margin:0">Your message opens in WhatsApp so you get a reply faster.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/frames.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    Shadeo.onReady(() => {
+      const { $, CFG, waLink } = Shadeo;
+      $('#call-link').href = `tel:${CFG.phone.replace(/[^\d+]/g, '')}`;
+      $('#mail-link').href = `mailto:${CFG.email}`;
+      $('#contact-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const msg = `Hi SHADEO! My name is ${$('#c-name').value.trim()} (${$('#c-phone').value.trim()}).\nTopic: ${$('#c-topic').value}\n\n${$('#c-msg').value.trim()}`;
+        window.open(waLink(msg), '_blank', 'noopener');
+      });
+    });
+  </script>
+</body>
+</html>

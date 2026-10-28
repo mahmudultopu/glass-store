@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The SHADEO Journal – Eyewear Guides &amp; Style Tips</title>
+  <meta name="description" content="Guides on face shapes, polarized lenses, UV400, blue-light glasses and reading your eye prescription.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23111'/%3E%3Ccircle cx='16' cy='16' r='9' fill='%23F5A623'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="blog">
+  <!-- Page: Journal. Post list and article bodies live in the inline script below; ?post= opens an article.
+       Header, menus, cart drawer and footer are injected into #site-header / #site-footer by assets/js/app.js. -->
+  <div id="site-header"></div>
+  <main id="main">
+    <section class="page-hero">
+      <div class="page-width">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> / <span>Journal</span></nav>
+        <h1>The Journal</h1>
+        <p>Guides, style tips and honest answers about eyewear.</p>
+      </div>
+    </section>
+    <section class="section">
+      <div class="page-width">
+        <ul class="blog-grid" id="blog-grid" role="list"></ul>
+      </div>
+    </section>
+    <section class="section section--white" id="article" hidden>
+      <div class="page-width prose" style="margin:0 auto" id="article-body"></div>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/frames.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    Shadeo.onReady(() => {
+      const { $, Art } = Shadeo;
+      const POSTS = [
+        { id: 'face-shape', title: 'Which sunglasses suit my face shape? A complete guide', excerpt: 'Round, oval, square or heart: the frame shapes that flatter every face.', tag: 'Style guide', bg: 'var(--amber)', art: Art.frame({ shape: 'cat-eye', material: 'acetate', frame: '#111', lens: '#3B2326' }), href: 'face-shapes.html' },
+        { id: 'polarized', title: 'Polarized vs non-polarized: which should you buy?', excerpt: 'What polarization actually does, and when it is worth it.', tag: '4 min read', bg: 'linear-gradient(160deg,#BFE3F2,#2F6FD6)', art: Art.frame({ shape: 'aviator', material: 'metal', frame: '#C9A227', lens: '#3D5A3A' }),
+          body: `<h2>Polarized vs non-polarized: which should you buy?</h2>
+            <p>All SHADEO sunglasses block 100% of UV rays. <strong>Polarization is an extra layer</strong> that deals with something different: glare.</p>
+            <h3>What is glare?</h3><p>When sunlight bounces off a flat surface (a road, a car bonnet, a river, wet tarmac after rain), it becomes concentrated horizontal light. That is the blinding white shine that makes you squint.</p>
+            <h3>What polarized lenses do</h3><p>A polarized lens has a filter that blocks that horizontal light. The result: less squinting, sharper contrast, richer colors, and less eye fatigue on long days outside.</p>
+            <h3>Choose polarized if you…</h3><ul><li>Drive or ride a lot, especially in the afternoon</li><li>Spend time near water: Cox's Bazar, Kuakata, boat trips, fishing</li><li>Get headaches from bright days</li></ul>
+            <h3>Non-polarized is fine if you…</h3><ul><li>Mainly wear sunglasses for style and short walks</li><li>Need to read LCD screens often (some screens look dark through polarized lenses)</li><li>Want gradient lenses for a fashion look</li></ul>
+            <div class="callout">Quick test: look at your phone screen through the lenses and rotate them 90°. If the screen darkens, they are polarized.</div>
+            <p><a class="btn" href="shop.html?c=polarized">Shop polarized</a></p>` },
+        { id: 'uv400', title: 'Fake vs real UV400: how to check your sunglasses', excerpt: 'A dark lens is not the same as a protective lens. Here is how to tell.', tag: '3 min read', bg: 'var(--ink)', art: Art.frame({ shape: 'square', material: 'acetate', frame: '#F5A623', lens: '#262626' }),
+          body: `<h2>Fake vs real UV400: how to check your sunglasses</h2>
+            <p>Dark lenses make your pupils open wider. If the lens does <em>not</em> block UV, more harmful light reaches your eyes than with no sunglasses at all. That is why cheap, unprotected sunglasses can be worse than none.</p>
+            <h3>What UV400 means</h3><p>UV400 lenses block light up to 400 nanometres, which covers all UVA and UVB rays.</p>
+            <h3>How to check</h3><ul><li><strong>UV torch + banknote:</strong> the security features on many banknotes glow under a UV torch. Put the lens between the torch and the note. If the glow disappears, the lens is blocking UV.</li><li><strong>Ask for the label:</strong> look for "UV400" or "100% UV protection" on the lens sticker or packaging.</li><li><strong>Optician shops</strong> often have a UV meter and can test them in seconds.</li></ul>
+            <p><a class="btn" href="shop.html?c=sunglasses">Shop UV400 sunglasses</a></p>` },
+        { id: 'blue-light', title: 'Blue-light glasses: do they work for students and office workers?', excerpt: 'What they help with, what they do not, and how to use them well.', tag: '4 min read', bg: 'linear-gradient(160deg,#1F2A44,#3A4E7A)', art: Art.frame({ shape: 'square', material: 'tr90', frame: '#C9D2DC', lens: '#cfe0f5', clear: true }),
+          body: `<h2>Blue-light glasses: do they work?</h2>
+            <p>Screens give off blue light and glare. After hours of laptop work, many people notice tired, dry or strained eyes.</p>
+            <h3>What blue-light lenses do</h3><p>They filter part of the blue light and, with anti-glare coating, cut reflections from screens and overhead lights. Many people say their eyes feel more comfortable by the end of the day.</p>
+            <h3>What they don't do</h3><p>They are not a medical treatment. Eye strain is also caused by not blinking enough, poor lighting and screens that are too close. If you have headaches or blurry vision, get an eye test.</p>
+            <h3>Habits that help</h3><ul><li><strong>20-20-20 rule:</strong> every 20 minutes, look 20 feet away for 20 seconds.</li><li>Keep your screen an arm's length away, slightly below eye level.</li><li>Match screen brightness to the room.</li></ul>
+            <p><a class="btn" href="shop.html?c=blue-light">Shop blue-light glasses</a></p>` },
+        { id: 'prescription', title: 'How to read your eye prescription (SPH, CYL, AXIS, PD)', excerpt: 'Decode the numbers on your prescription in two minutes.', tag: 'Guide', bg: 'var(--amber-soft)', art: Art.frame({ shape: 'round', material: 'metal', frame: '#111', lens: '#dfe7ee', clear: true }), href: 'prescription.html' },
+      ];
+
+      $('#blog-grid').innerHTML = POSTS.map((p) => `<li><a class="blog-card" href="${p.href || `blog.html?post=${p.id}`}">
+        <div class="blog-card__visual" style="background:${p.bg}">${p.art}</div>
+        <div class="blog-card__body"><h3>${p.title}</h3><p>${p.excerpt}</p><span class="blog-card__meta">${p.tag} →</span></div></a></li>`).join('');
+
+      const post = POSTS.find((p) => p.id === Shadeo.params.get('post') && p.body);
+      if (post) {
+        $('#article-body').innerHTML = post.body + '<p style="margin-top:32px"><a class="link" href="blog.html">← All articles</a></p>';
+        $('#article').hidden = false;
+        document.title = `${post.title} – SHADEO`;
+        $('#article').scrollIntoView();
+      }
+    });
+  </script>
+</body>
+</html>

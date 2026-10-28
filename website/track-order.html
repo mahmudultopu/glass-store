@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Track Your Order – SHADEO</title>
+  <meta name="description" content="Check the status of your SHADEO order.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23111'/%3E%3Ccircle cx='16' cy='16' r='9' fill='%23F5A623'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="track">
+  <!-- Page: Order tracking. Looks up orders saved in this browser by order number + phone.
+       Header, menus, cart drawer and footer are injected into #site-header / #site-footer by assets/js/app.js. -->
+  <div id="site-header"></div>
+  <main id="main">
+    <section class="page-hero">
+      <div class="page-width">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> / <span>Track order</span></nav>
+        <h1>Where's my order?</h1>
+        <p>Enter your order number and the mobile number you used at checkout.</p>
+      </div>
+    </section>
+    <section class="section">
+      <div class="page-width" style="max-width:720px">
+        <form class="form" id="track-form">
+          <div class="form-row form-row--2">
+            <div class="field"><label for="track-id">Order number</label><input id="track-id" placeholder="SHD-XXXXXX" required style="text-transform:uppercase"></div>
+            <div class="field"><label for="track-phone">Mobile number</label><input id="track-phone" type="tel" placeholder="01XXXXXXXXX" required></div>
+          </div>
+          <button class="btn" type="submit">Track order</button>
+        </form>
+        <div id="track-result" aria-live="polite" style="margin-top:28px"></div>
+        <div class="callout">After your order ships, you'll get an SMS with your courier tracking link. Can't find your order? <a data-wa="Hi SHADEO! Can you help me track my order?" href="#" target="_blank" rel="noopener">WhatsApp us your order number</a>.</div>
+        <div id="recent-orders"></div>
+      </div>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/frames.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    Shadeo.onReady(() => {
+      const { $, store, money, esc } = Shadeo;
+      const norm = (s) => s.replace(/\D/g, '').slice(-10);
+      const orders = store.get('shadeo_orders', []);
+
+      function show(o) {
+        const placed = new Date(o.createdAt);
+        // Without a server only "placed" is known here; the team sends later updates by SMS/WhatsApp
+        const steps = [
+          ['Order placed', placed.toLocaleString('en-GB'), true],
+          ['Confirmed by SHADEO', 'We call or WhatsApp to confirm', false],
+          ['Shipped', 'SMS with tracking link', false],
+          ['Delivered', o.pay === 'cod' ? `Pay ${money(o.total)} on delivery` : 'Paid', false],
+        ];
+        $('#track-result').innerHTML = `
+          <div class="confirm__box" style="margin:0">
+            <p class="eyebrow">Order ${esc(o.id)}</p>
+            <p><strong>${o.lines.map((l) => `${l.qty} × ${esc(l.name)}`).join(', ')}</strong></p>
+            <p class="muted">Total ${money(o.total)} · ${esc(o.address)}, ${esc(o.district)}</p>
+            <ol class="timeline">${steps.map(([t, s, done]) => `<li class="${done ? 'is-done' : ''}"><div><strong>${t}</strong><span>${s}</span></div></li>`).join('')}</ol>
+          </div>`;
+      }
+
+      $('#track-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const id = $('#track-id').value.trim().toUpperCase();
+        const phone = norm($('#track-phone').value);
+        const o = orders.find((x) => x.id === id && norm(x.phone) === phone);
+        if (o) show(o);
+        else $('#track-result').innerHTML = '<div class="empty-state"><h3>No order found</h3><p class="muted">Check the order number and mobile number, or WhatsApp us and we\'ll check for you.</p></div>';
+      });
+
+      if (orders.length) {
+        $('#recent-orders').innerHTML = `<h2 style="font-size:1.2rem;margin-top:32px">Orders from this device</h2>
+          <div class="contact-cards">${orders.slice(0, 5).map((o) => `<a class="contact-card" href="checkout.html?order=${o.id}"><div><strong>${esc(o.id)}</strong><span>${new Date(o.createdAt).toLocaleDateString('en-GB')} · ${money(o.total)}</span></div></a>`).join('')}</div>`;
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+{%- comment -%}
+  SHADEO "Complete your order" upsell for the cart drawer.
+  Render inside snippets/cart-drawer.liquid (see 01-THEME-SETUP.md, step 5):
+    {% render 'shadeo-cart-upsell' %}
+
+  Set upsell_handle to the handle of the product you want to suggest.
+  It hides itself once that product is already in the cart.
+{%- endcomment -%}
+{%- liquid
+  assign upsell_handle = 'shadeo-cleaning-kit'
+  assign upsell = all_products[upsell_handle]
+  assign in_cart = false
+  for item in cart.items
+    if item.product_id == upsell.id
+      assign in_cart = true
+      break
+    endif
+  endfor
+-%}
+{%- if cart.item_count > 0 and upsell.id and upsell.available and in_cart == false -%}
+  {%- assign upsell_variant = upsell.selected_or_first_available_variant -%}
+  <div class="shadeo-upsell">
+    <p class="shadeo-upsell__heading">Complete your order</p>
+    <div class="shadeo-upsell__item">
+      {%- if upsell.featured_media -%}
+        {{ upsell.featured_media | image_url: width: 160 | image_tag: loading: 'lazy', alt: upsell.title }}
+      {%- endif -%}
+      <div class="shadeo-upsell__info">
+        <p><strong>{{ upsell.title }}</strong></p>
+        <p>{{ upsell_variant.price | money }}</p>
+      </div>
+      <button type="button" class="button button--secondary" data-shadeo-upsell-add data-variant-id="{{ upsell_variant.id }}">
+        Add
+      </button>
+    </div>
+  </div>
+{%- endif -%}

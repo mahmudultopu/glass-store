@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SHADEO</title>
+  <meta name="description" content="Premium sunglasses and eyeglasses by SHADEO. 100% UV400, Cash on Delivery across Bangladesh.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23111'/%3E%3Ccircle cx='16' cy='16' r='9' fill='%23F5A623'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="product">
+  <!-- Page: Product page. ?p= is the product handle from data.js. Gallery, colors, lens selector and prescription form: assets/js/pages/product.js.
+       Header, menus, cart drawer and footer are injected into #site-header / #site-footer by assets/js/app.js. -->
+  <div id="site-header"></div>
+
+  <main id="main">
+    <div class="page-width" id="product-root"></div>
+
+    <section class="section section--white" id="complete-look" hidden>
+      <div class="page-width">
+        <div class="section-head"><div><h2>Complete the look</h2><p>Keep your new frames looking new.</p></div></div>
+        <ul class="row-scroll" id="complete-grid" role="list"></ul>
+      </div>
+    </section>
+
+    <section class="section" id="related" hidden>
+      <div class="page-width">
+        <div class="section-head"><div><h2>You may also like</h2></div><a class="link-arrow" href="shop.html?c=all">Shop all</a></div>
+        <ul class="row-scroll" id="related-grid" role="list"></ul>
+      </div>
+    </section>
+
+    <dialog class="modal" id="size-guide" aria-labelledby="size-guide-title">
+      <div class="modal__inner">
+        <button class="modal__close" type="button" data-dialog-close aria-label="Close">×</button>
+        <h2 id="size-guide-title">Find your size</h2>
+        <table>
+          <thead><tr><th>Size</th><th>Frame width</th><th>Best for</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Small</strong></td><td>Up to 130 mm</td><td>Narrow faces, teens</td></tr>
+            <tr><td><strong>Medium</strong></td><td>131 – 140 mm</td><td>Most faces</td></tr>
+            <tr><td><strong>Large</strong></td><td>141 mm +</td><td>Wider faces, oversized look</td></tr>
+          </tbody>
+        </table>
+        <p><strong>Which size fits me?</strong></p>
+        <ol>
+          <li><strong>Check glasses you already own.</strong> Look inside the arm for numbers like <em>52□18-140</em>: lens width, bridge and temple length in mm. Pick a SHADEO frame within ±2 mm.</li>
+          <li><strong>The card trick.</strong> Hold any bank card flat under your nose, one short edge at the centre of your nose. If it reaches past the outer corner of your eye, choose Small. If it ends right at the corner, Medium. If it stops before the corner, Large.</li>
+          <li><strong>Still not sure?</strong> <a data-wa="Hi SHADEO! Can you help me pick a frame size? I'll send a selfie." href="#" target="_blank" rel="noopener">Send us a selfie on WhatsApp</a> and we'll recommend a size.</li>
+        </ol>
+      </div>
+    </dialog>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/frames.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/pages/product.js"></script>
+</body>
+</html>

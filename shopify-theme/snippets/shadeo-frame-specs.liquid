@@ -1,0 +1,59 @@
+{%- comment -%}
+  SHADEO frame measurements + size guide popup.
+
+  Add a "Custom liquid" block to the product page and paste:
+    {% render 'shadeo-frame-specs', product: product, section_id: section.id %}
+
+  Reads these product metafields (Settings → Custom data → Products):
+    custom.frame_size     single line text  e.g. "Medium"
+    custom.lens_width     integer (mm)      e.g. 52
+    custom.bridge_width   integer (mm)      e.g. 18
+    custom.temple_length  integer (mm)      e.g. 145
+    custom.frame_width    integer (mm)      e.g. 138
+    custom.frame_material single line text  e.g. "Acetate"
+    custom.frame_weight   integer (grams)   e.g. 24
+{%- endcomment -%}
+{%- assign m = product.metafields.custom -%}
+{%- if m.lens_width != blank or m.frame_width != blank -%}
+  {%- assign dialog_id = 'SizeGuide-' | append: section_id -%}
+  <div class="shadeo-specs">
+    <div class="shadeo-specs__head">
+      <p class="h4">Frame size{% if m.frame_size != blank %}: {{ m.frame_size }}{% endif %}</p>
+      <button type="button" class="shadeo-link-btn" data-shadeo-open="{{ dialog_id }}" aria-haspopup="dialog">Size guide</button>
+    </div>
+    <ul class="shadeo-specs__list" role="list">
+      {%- if m.lens_width != blank -%}<li><span>{{ m.lens_width }} mm</span><small>Lens</small></li>{%- endif -%}
+      {%- if m.bridge_width != blank -%}<li><span>{{ m.bridge_width }} mm</span><small>Bridge</small></li>{%- endif -%}
+      {%- if m.temple_length != blank -%}<li><span>{{ m.temple_length }} mm</span><small>Temple</small></li>{%- endif -%}
+      {%- if m.frame_width != blank -%}<li><span>{{ m.frame_width }} mm</span><small>Frame width</small></li>{%- endif -%}
+    </ul>
+    {%- if m.frame_material != blank or m.frame_weight != blank -%}
+      <p class="shadeo-specs__meta">
+        {%- if m.frame_material != blank -%}Material: {{ m.frame_material }}{%- endif -%}
+        {%- if m.frame_material != blank and m.frame_weight != blank %} · {% endif -%}
+        {%- if m.frame_weight != blank -%}Weight: {{ m.frame_weight }} g{%- endif -%}
+      </p>
+    {%- endif -%}
+  </div>
+
+  <dialog id="{{ dialog_id }}" class="shadeo-dialog" aria-labelledby="{{ dialog_id }}-title">
+    <div class="shadeo-dialog__inner">
+      <button type="button" class="shadeo-dialog__close" data-shadeo-close aria-label="Close">&times;</button>
+      <h2 id="{{ dialog_id }}-title" class="h3">Find your size</h2>
+      <table>
+        <thead><tr><th>Size</th><th>Frame width</th><th>Best for</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Small</strong></td><td>Up to 130 mm</td><td>Narrow faces, teens</td></tr>
+          <tr><td><strong>Medium</strong></td><td>131 – 140 mm</td><td>Most faces</td></tr>
+          <tr><td><strong>Large</strong></td><td>141 mm and up</td><td>Wider faces, oversized look</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Which size fits me?</strong></p>
+      <ol>
+        <li><strong>Check glasses you already own.</strong> Look inside the arm for three numbers like <em>52□18-140</em>: lens width, bridge, and temple length in mm. Pick a SHADEO frame within ±2 mm.</li>
+        <li><strong>The card trick.</strong> Hold any bank card flat under your nose, one short edge at the centre of your nose. If the card reaches past the outer corner of your eye, choose Small. If it ends right at the corner, choose Medium. If it stops before the corner, choose Large.</li>
+        <li><strong>Still not sure?</strong> Send us a front-facing selfie on WhatsApp and we'll recommend frames for you.</li>
+      </ol>
+    </div>
+  </dialog>
+{%- endif -%}

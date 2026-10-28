@@ -1,0 +1,38 @@
+{%- liquid
+  assign phone = section.settings.phone | remove: '+' | remove: ' ' | remove: '-'
+  assign message = section.settings.message
+  if template.name == 'product'
+    assign message = message | append: ' (Product: ' | append: product.title | append: ')'
+  endif
+-%}
+{%- if phone != blank -%}
+  <a
+    href="https://wa.me/{{ phone }}?text={{ message | url_encode }}"
+    class="shadeo-wa"
+    target="_blank"
+    rel="noopener"
+    aria-label="{{ section.settings.label }} on WhatsApp"
+  >
+    {% render 'shadeo-icon', icon: 'chat' %}
+    <span class="shadeo-wa__label">{{ section.settings.label }}</span>
+  </a>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "SHADEO WhatsApp button",
+  "tag": "div",
+  "enabled_on": { "groups": ["footer"] },
+  "settings": [
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "WhatsApp number",
+      "info": "Country code + number, digits only. Example: 8801712345678"
+    },
+    { "type": "text", "id": "label", "label": "Button text", "default": "Chat with us" },
+    { "type": "text", "id": "message", "label": "Pre-filled message", "default": "Hi SHADEO! I have a question." }
+  ],
+  "presets": [{ "name": "SHADEO WhatsApp button" }]
+}
+{% endschema %}
