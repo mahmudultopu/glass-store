@@ -179,7 +179,7 @@ Shadeo.onReady(() => {
         <p class="eyebrow">Order ${esc(order.id)}</p>
         <h1 style="font-size:clamp(2rem,5vw,3.2rem)">Thank you, ${esc(order.name.split(' ')[0])}!</h1>
         <p class="muted">One last step: send your order to us on WhatsApp so our team can confirm it right away.</p>
-        <a class="btn btn--amber" href="${waLink(msg)}" target="_blank" rel="noopener">${icon('chat')} Confirm on WhatsApp</a>
+        <a class="btn btn--accent" href="${waLink(msg)}" target="_blank" rel="noopener">${icon('chat')} Confirm on WhatsApp</a>
         <div class="confirm__box">
           <p><strong>Estimated delivery:</strong> ${eta(range)}</p>
           <p><strong>Payment:</strong> ${payLabel}${order.trx ? ` · TrxID ${esc(order.trx)}` : ''}</p>

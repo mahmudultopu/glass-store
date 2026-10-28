@@ -13,8 +13,8 @@ Shadeo.onReady(() => {
 
   const GROUPS = [
     { key: 'shape', title: 'Shape', options: window.SHADEO_SHAPES.map((s) => [s.id, s.label]), test: (p, v) => p.shape === v },
-    { key: 'gender', title: 'Gender', options: [['men', 'Men'], ['women', 'Women']], test: (p, v) => p.tags.includes(v) },
-    { key: 'lens', title: 'Lens type', options: [['polarized', 'Polarized'], ['gradient', 'Gradient'], ['mirrored', 'Mirrored'], ['blue-light', 'Blue light'], ['lens-selector', 'Prescription-ready']], test: (p, v) => p.tags.includes(v) },
+    { key: 'gender', title: 'For', options: [['women', 'Women'], ['men', 'Men'], ['kids', 'Kids']], test: (p, v) => p.tags.includes(v) },
+    { key: 'lens', title: 'Lens type', options: [['polarized', 'Polarized'], ['gradient', 'Gradient'], ['blue-light', 'Blue light'], ['lens-selector', 'Prescription-ready']], test: (p, v) => p.tags.includes(v) },
     { key: 'material', title: 'Frame material', options: [['metal', 'Metal'], ['acetate', 'Acetate'], ['tr90', 'TR90 (flexible)']], test: (p, v) => p.material === v },
     { key: 'price', title: 'Price', options: [['0-1999', 'Under Tk 2,000'], ['2000-2499', 'Tk 2,000 – 2,499'], ['2500-2999', 'Tk 2,500 – 2,999'], ['3000-99999', 'Tk 3,000+']], test: (p, v) => { const [a, b] = v.split('-').map(Number); return p.price >= a && p.price <= b; } },
     { key: 'stock', title: 'Availability', options: [['in', 'In stock']], test: (p) => p.stock > 0 },
@@ -28,7 +28,14 @@ Shadeo.onReady(() => {
   $('#shop-desc').textContent = q ? 'Showing frames that match your search.' : info.desc;
   document.title = `${title} – SHADEO`;
 
-  const chipCats = ['all', 'sunglasses', 'eyeglasses', 'blue-light', 'polarized', 'new', 'bestsellers', 'sale', 'accessories'];
+  // Women / Men / Kids / Optical get a full-width photo banner
+  if (info.image && !q) {
+    const hero = $('#shop-hero');
+    hero.classList.add('page-hero--image');
+    hero.insertAdjacentHTML('afterbegin', Shadeo.photo(info.image, '', '', true));
+  }
+
+  const chipCats = ['all', 'women', 'men', 'kids', 'sunglasses', 'eyeglasses', 'blue-light', 'polarized', 'new', 'sale', 'accessories'];
   $('#cat-chips').innerHTML = chipCats.map((c) => `<a class="chip${c === cat && !q ? ' is-active' : ''}" href="shop.html?c=${c}">${CATS[c].title.replace('Shop All', 'All')}</a>`).join('');
 
   // Base set: category + search

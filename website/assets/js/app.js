@@ -25,15 +25,13 @@
   const waLink = (msg) => `https://wa.me/${CFG.whatsapp}?text=${encodeURIComponent(msg || 'Hi SHADEO! I have a question.')}`;
   const params = new URLSearchParams(location.search);
 
-  function productArt(p, colorIndex = 0, label = true) {
+  // Product photo as an <img>. Pass cls to style it, eager for above-the-fold images.
+  function productArt(p, colorIndex = 0, label = true, cls = '', eager = false) {
     const c = p.colors[colorIndex] || p.colors[0];
-    if (p.type === 'Accessories') return Art.accessory(p.accessory, c.frame);
-    return Art.frame({
-      shape: p.shape, material: p.material, frame: c.frame, lens: c.lens,
-      clear: c.clear, gradient: c.gradient, mirror: c.mirror,
-      label: label ? `${p.name} ${p.style} in ${c.name}` : '',
-    });
+    const alt = label ? `${p.name} ${p.style} in ${c.name}` : '';
+    return `<img src="${p.image}" alt="${esc(alt)}"${cls ? ` class="${cls}"` : ''} loading="${eager ? 'eager' : 'lazy'}" decoding="async" width="880" height="1100">`;
   }
+  const photo = (src, alt, cls = '', eager = false) => `<img src="${src}" alt="${esc(alt || '')}"${cls ? ` class="${cls}"` : ''} loading="${eager ? 'eager' : 'lazy'}" decoding="async">`;
 
   // Lens options shown for a product (blue-light frames already include the filter)
   function lensOptions(p) {
@@ -130,23 +128,18 @@
 
   function card(p) {
     const url = `product.html?p=${p.handle}`;
-    const alt = p.colors[1] ? 1 : 0;
-    const swatches = p.colors.length > 1
-      ? `<div class="swatches">${p.colors.map((c, i) => `<button type="button" class="swatch${i === 0 ? ' is-active' : ''}" style="background:linear-gradient(135deg, ${c.frame} 50%, ${c.lens} 50%)" data-swatch="${i}" aria-label="${esc(c.name)}"></button>`).join('')}</div>`
-      : '';
     const needsOptions = p.tags.includes('lens-selector');
     return `
       <article class="card" data-handle="${p.handle}">
         <div class="card__media">
           <div class="card__badges">${badges(p)}</div>
-          <div class="card__img card__img--main">${productArt(p, 0)}</div>
-          <div class="card__img card__img--alt" style="background:${p.type === 'Accessories' ? 'var(--paper)' : 'var(--amber-soft)'}">${productArt(p, alt, false)}</div>
-          ${p.stock === 0 ? '' : `<button type="button" class="card__quick" data-quick="${p.handle}" aria-label="${needsOptions ? 'Choose lenses for' : 'Add to cart:'} ${esc(p.name)}">${needsOptions ? 'Choose' : '+ Add'}</button>`}
+          ${productArt(p, 0, true, 'card__img card__img--main')}
+          ${p.stock === 0 ? '' : `<button type="button" class="card__quick" data-quick="${p.handle}" aria-label="${needsOptions ? 'Choose lenses for' : 'Add to cart:'} ${esc(p.name)}">${needsOptions ? 'Choose lenses' : 'Add to bag'}</button>`}
         </div>
         <div class="card__info">
           <a class="card__title" href="${url}">${esc(p.name)}</a>
-          <span class="card__sub">${esc(p.style)} · ${p.colors.length} ${p.colors.length > 1 ? 'colors' : 'color'}</span>
-          <div class="card__row">${priceHTML(p)}${swatches}</div>
+          <span class="card__sub">${esc(p.style)} · ${esc(p.colors[0].name)}</span>
+          <div class="card__row">${priceHTML(p)}</div>
         </div>
       </article>`;
   }
@@ -155,89 +148,80 @@
     container.innerHTML = products.map((p) => `<li>${card(p)}</li>`).join('');
   }
 
-  // Swatch hover/click updates the card image; quick add
+  // Quick add from a product card (frames with lens options go to the product page instead)
   document.addEventListener('click', (e) => {
-    const sw = e.target.closest('[data-swatch]');
-    if (sw) {
-      e.preventDefault();
-      const cardEl = sw.closest('.card');
-      const p = byHandle(cardEl.dataset.handle);
-      const i = Number(sw.dataset.swatch);
-      $('.card__img--main', cardEl).innerHTML = productArt(p, i);
-      $$('.swatch', cardEl).forEach((s) => s.classList.toggle('is-active', s === sw));
-      cardEl.dataset.color = i;
-      return;
-    }
     const quick = e.target.closest('[data-quick]');
-    if (quick) {
-      e.preventDefault();
-      const p = byHandle(quick.dataset.quick);
-      if (p.tags.includes('lens-selector')) { location.href = `product.html?p=${p.handle}`; return; }
-      const cardEl = quick.closest('.card');
-      const ci = Number(cardEl && cardEl.dataset.color) || 0;
-      Cart.add({ handle: p.handle, color: p.colors[ci].name, lens: 'none', rx: null, qty: 1 });
-      openCart();
-    }
+    if (!quick) return;
+    e.preventDefault();
+    const p = byHandle(quick.dataset.quick);
+    if (p.tags.includes('lens-selector')) { location.href = `product.html?p=${p.handle}`; return; }
+    Cart.add({ handle: p.handle, color: p.colors[0].name, lens: 'none', rx: null, qty: 1 });
+    openCart();
   });
 
   /* ---------- Layout: announcement, header, footer ---------- */
-  const shapeLinks = window.SHADEO_SHAPES.filter((s) => s.id !== 'rectangle')
-    .map((s) => `<li><a href="shop.html?c=sunglasses&shape=${s.id}">${Art.outline(s.id)}${s.label}</a></li>`).join('');
+  const shapeLinks = (cat) => window.SHADEO_SHAPES.filter((s) => s.id !== 'shield')
+    .map((s) => `<li><a href="shop.html?c=${cat}&shape=${s.id}">${Art.outline(s.id)}${s.label}</a></li>`).join('');
+
+  const megaMenu = (cat, links, feature1, feature2) => `
+    <div class="mega"><div class="mega__inner">
+      <div><p class="mega__title">Shop</p><ul class="mega__links">${links}</ul></div>
+      <div><p class="mega__title">By shape</p><ul class="mega__links mega__shapes">${shapeLinks(cat)}</ul></div>
+      <a class="mega__feature" href="${feature1.href}">${photo(feature1.img, feature1.label)}<span>${feature1.label}</span></a>
+      <a class="mega__feature" href="${feature2.href}">${photo(feature2.img, feature2.label)}<span>${feature2.label}</span></a>
+    </div></div>`;
 
   function headerHTML() {
     const page = document.body.dataset.page;
     const cat = params.get('c');
     const cur = (c) => (page === 'shop' && cat === c ? ' aria-current="page"' : '');
+    const IMG = 'assets/img/';
     return `
       <a class="skip-link" href="#main">Skip to content</a>
       <div class="announcement" role="region" aria-label="Announcements">
-        <div class="announcement__item is-active"><a href="shop.html?c=all"><strong>Free delivery</strong> on orders over Tk 3,000 · Cash on Delivery available</a></div>
-        <div class="announcement__item"><a href="shop.html?c=all"><strong>Buy 2, get 15% off</strong> · Mix &amp; match any frames</a></div>
-        <div class="announcement__item"><a href="shop.html?c=new">New drop: <strong>The Monsoon Edit</strong> is here →</a></div>
+        <div class="announcement__item is-active"><a href="shop.html?c=all">Complimentary delivery on orders over Tk 3,000 · Cash on Delivery</a></div>
+        <div class="announcement__item"><a href="shop.html?c=all">Buy 2 frames, get 15% off · Mix &amp; match</a></div>
+        <div class="announcement__item"><a href="shop.html?c=kids">New: the Kids collection is here</a></div>
       </div>
       <header class="header" id="header">
         <div class="page-width header__inner">
           <div class="header__left">
             <button class="icon-btn menu-toggle" type="button" data-open="menu" aria-label="Open menu">${icon('menu')}</button>
-            <a class="logo" href="index.html" aria-label="SHADEO home">SHADE<span class="logo__o" aria-hidden="true"></span></a>
+            <nav class="nav" aria-label="Main">
+              <ul class="nav__list">
+                <li class="nav__item">
+                  <a class="nav__link" href="shop.html?c=women"${cur('women')}>Women</a>
+                  ${megaMenu('women', `
+                    <li><a href="shop.html?c=women">All women</a></li>
+                    <li><a href="shop.html?c=sunglasses">Sunglasses</a></li>
+                    <li><a href="shop.html?c=eyeglasses">Eyeglasses</a></li>
+                    <li><a href="shop.html?c=blue-light">Blue light</a></li>
+                    <li><a href="shop.html?c=new">New arrivals</a></li>`,
+                    { href: 'shop.html?c=women&shape=cat-eye', img: IMG + 'people/women-cat-eye.jpg', label: 'The cat eye edit' },
+                    { href: 'shop.html?c=eyeglasses', img: IMG + 'people/women-eyeglasses.jpg', label: 'Optical frames' })}
+                </li>
+                <li class="nav__item">
+                  <a class="nav__link" href="shop.html?c=men"${cur('men')}>Men</a>
+                  ${megaMenu('men', `
+                    <li><a href="shop.html?c=men">All men</a></li>
+                    <li><a href="shop.html?c=polarized">Polarized</a></li>
+                    <li><a href="shop.html?c=eyeglasses">Eyeglasses</a></li>
+                    <li><a href="shop.html?c=bestsellers">Bestsellers</a></li>
+                    <li><a href="shop.html?c=accessories">Accessories</a></li>`,
+                    { href: 'shop.html?c=men&shape=aviator', img: IMG + 'people/men-beach.jpg', label: 'Aviators' },
+                    { href: 'shop.html?c=men', img: IMG + 'people/men-jacket.jpg', label: 'Everyday classics' })}
+                </li>
+                <li class="nav__item"><a class="nav__link" href="shop.html?c=kids"${cur('kids')}>Kids</a></li>
+                <li class="nav__item"><a class="nav__link" href="shop.html?c=eyeglasses"${cur('eyeglasses')}>Optical</a></li>
+                <li class="nav__item"><a class="nav__link nav__link--sale" href="shop.html?c=sale"${cur('sale')}>Sale</a></li>
+              </ul>
+            </nav>
           </div>
-          <nav class="nav" aria-label="Main">
-            <ul class="nav__list">
-              <li class="nav__item">
-                <a class="nav__link" href="shop.html?c=sunglasses"${cur('sunglasses')}>Sunglasses</a>
-                <div class="mega"><div class="mega__inner">
-                  <div><p class="mega__title">Shop</p><ul class="mega__links">
-                    <li><a href="shop.html?c=men">Men</a></li><li><a href="shop.html?c=women">Women</a></li>
-                    <li><a href="shop.html?c=polarized">Polarized</a></li><li><a href="shop.html?c=new">New Arrivals</a></li>
-                    <li><a href="shop.html?c=bestsellers">Bestsellers</a></li><li><a href="shop.html?c=sunglasses">All Sunglasses</a></li>
-                  </ul></div>
-                  <div><p class="mega__title">Shop by shape</p><ul class="mega__links mega__shapes">${shapeLinks}</ul></div>
-                  <a class="mega__feature" href="shop.html?c=new"><h3>The Monsoon Edit</h3><p>Moody tints, bold acetate, zero glare.</p>${Art.frame({ shape: 'cat-eye', material: 'acetate', frame: '#111111', lens: '#3B2326' })}</a>
-                </div></div>
-              </li>
-              <li class="nav__item">
-                <a class="nav__link" href="shop.html?c=eyeglasses"${cur('eyeglasses')}>Eyeglasses</a>
-                <div class="mega"><div class="mega__inner">
-                  <div><p class="mega__title">Shop</p><ul class="mega__links">
-                    <li><a href="shop.html?c=eyeglasses">All Eyeglasses</a></li><li><a href="shop.html?c=blue-light">Blue Light</a></li>
-                    <li><a href="shop.html?c=prescription">Prescription Sunglasses</a></li>
-                  </ul></div>
-                  <div><p class="mega__title">Help me choose</p><ul class="mega__links">
-                    <li><a href="prescription.html">How prescription works</a></li><li><a href="face-shapes.html">Face shape guide</a></li>
-                    <li><a href="quiz.html">Take the frame quiz</a></li>
-                  </ul></div>
-                  <a class="mega__feature" href="prescription.html" style="background:var(--ink);color:var(--paper)"><h3>Your prescription, in style</h3><p>Complete glasses from Tk 3,390, lenses included.</p>${Art.frame({ shape: 'round', material: 'metal', frame: '#C9A227', lens: '#dfe7ee', clear: true })}</a>
-                </div></div>
-              </li>
-              <li class="nav__item"><a class="nav__link" href="shop.html?c=blue-light"${cur('blue-light')}>Blue Light</a></li>
-              <li class="nav__item"><a class="nav__link" href="shop.html?c=accessories"${cur('accessories')}>Accessories</a></li>
-              <li class="nav__item"><a class="nav__link nav__link--sale" href="shop.html?c=sale"${cur('sale')}>Sale</a></li>
-            </ul>
-          </nav>
+          <a class="logo" href="index.html" aria-label="SHADEO home">SHADEO<small>EYEWEAR · DHAKA</small></a>
           <div class="header__icons">
             <button class="icon-btn" type="button" data-open="search" aria-label="Search">${icon('search')}</button>
             <a class="icon-btn" href="track-order.html" aria-label="Track order">${icon('box')}</a>
-            <button class="icon-btn" type="button" data-open="cart" aria-label="Open cart">${icon('bag')}<span class="cart-count" hidden>0</span></button>
+            <button class="icon-btn" type="button" data-open="cart" aria-label="Open bag">${icon('bag')}<span class="cart-count" hidden>0</span></button>
           </div>
         </div>
       </header>
@@ -251,34 +235,38 @@
             <button class="icon-btn" type="button" data-close aria-label="Close search">${icon('close')}</button>
           </div>
           <div class="search__suggest">
-            <a class="chip" href="shop.html?c=polarized">Polarized</a><a class="chip" href="shop.html?c=sunglasses&shape=aviator">Aviator</a>
-            <a class="chip" href="shop.html?c=sunglasses&shape=cat-eye">Cat eye</a><a class="chip" href="shop.html?c=blue-light">Blue light</a>
-            <a class="chip" href="shop.html?c=eyeglasses">Eyeglasses</a><a class="chip" href="shop.html?c=sale">Sale</a>
+            <a class="chip" href="shop.html?c=women">Women</a><a class="chip" href="shop.html?c=men">Men</a><a class="chip" href="shop.html?c=kids">Kids</a>
+            <a class="chip" href="shop.html?c=polarized">Polarized</a><a class="chip" href="shop.html?c=all&shape=cat-eye">Cat eye</a><a class="chip" href="shop.html?c=blue-light">Blue light</a>
           </div>
-          <ul class="search__results grid" id="search-results" role="list"></ul>
+          <ul class="search__results grid grid--4" id="search-results" role="list"></ul>
         </div>
       </div>
 
       <div class="overlay" id="overlay"></div>
 
       <aside class="drawer drawer--left" id="menu" aria-label="Menu" aria-hidden="true">
-        <div class="drawer__head"><a class="logo" href="index.html">SHADE<span class="logo__o"></span></a><button class="icon-btn" type="button" data-close aria-label="Close menu">${icon('close')}</button></div>
+        <div class="drawer__head"><a class="logo" href="index.html" style="font-size:1.5rem">SHADEO</a><button class="icon-btn" type="button" data-close aria-label="Close menu">${icon('close')}</button></div>
         <div class="drawer__body">
+          <div class="mobile-feature">
+            <a href="shop.html?c=women">${photo(IMG + 'people/women-smile.jpg', 'Women')}<span>Women</span></a>
+            <a href="shop.html?c=men">${photo(IMG + 'people/men-jacket.jpg', 'Men')}<span>Men</span></a>
+            <a href="shop.html?c=kids">${photo(IMG + 'people/kids-girl-green.jpg', 'Kids')}<span>Kids</span></a>
+          </div>
           <ul class="mobile-nav">
             <li><details><summary>Sunglasses</summary><ul>
-              <li><a href="shop.html?c=sunglasses">All Sunglasses</a></li><li><a href="shop.html?c=men">Men</a></li><li><a href="shop.html?c=women">Women</a></li>
-              <li><a href="shop.html?c=polarized">Polarized</a></li><li><a href="shop.html?c=new">New Arrivals</a></li><li><a href="shop.html?c=bestsellers">Bestsellers</a></li>
+              <li><a href="shop.html?c=sunglasses">All sunglasses</a></li><li><a href="shop.html?c=polarized">Polarized</a></li>
+              <li><a href="shop.html?c=new">New arrivals</a></li><li><a href="shop.html?c=bestsellers">Bestsellers</a></li>
+            </ul></details></li>
+            <li><details><summary>Optical</summary><ul>
+              <li><a href="shop.html?c=eyeglasses">All eyeglasses</a></li><li><a href="shop.html?c=blue-light">Blue light</a></li>
+              <li><a href="shop.html?c=prescription">Prescription ready</a></li><li><a href="prescription.html">How prescription works</a></li>
             </ul></details></li>
             <li><details><summary>Shop by shape</summary><ul>${window.SHADEO_SHAPES.map((s) => `<li><a href="shop.html?c=all&shape=${s.id}">${s.label}</a></li>`).join('')}</ul></details></li>
-            <li><details><summary>Eyeglasses</summary><ul>
-              <li><a href="shop.html?c=eyeglasses">All Eyeglasses</a></li><li><a href="shop.html?c=prescription">Prescription Sunglasses</a></li><li><a href="prescription.html">How it works</a></li>
-            </ul></details></li>
-            <li><a href="shop.html?c=blue-light">Blue Light</a></li>
             <li><a href="shop.html?c=accessories">Accessories</a></li>
             <li><a class="mobile-nav__sale" href="shop.html?c=sale">Sale</a></li>
           </ul>
-          <div class="mobile-extra">
-            <a href="quiz.html">Find your frame (quiz)</a>
+          <div class="mobile-extra" style="margin-top:24px">
+            <a href="quiz.html">Find your frame</a>
             <a href="face-shapes.html">Face shape guide</a>
             <a href="track-order.html">Track my order</a>
             <a href="faq.html">Help &amp; FAQ</a>
@@ -287,8 +275,8 @@
         </div>
       </aside>
 
-      <aside class="drawer drawer--right" id="cart" aria-label="Cart" aria-hidden="true">
-        <div class="drawer__head"><h2>Your cart <span id="cart-head-count"></span></h2><button class="icon-btn" type="button" data-close aria-label="Close cart">${icon('close')}</button></div>
+      <aside class="drawer drawer--right" id="cart" aria-label="Shopping bag" aria-hidden="true">
+        <div class="drawer__head"><h2>Your bag <span id="cart-head-count"></span></h2><button class="icon-btn" type="button" data-close aria-label="Close bag">${icon('close')}</button></div>
         <div class="drawer__body" id="cart-body"></div>
         <div class="drawer__foot" id="cart-foot"></div>
       </aside>
@@ -303,8 +291,8 @@
         <div class="page-width">
           <div class="footer__grid">
             <div class="footer__brand">
-              <a class="logo" href="index.html">SHADE<span class="logo__o"></span></a>
-              <p>Premium sunglasses and eyeglasses at honest prices. Designed in Dhaka. Worn everywhere.</p>
+              <a class="logo" href="index.html" style="padding-left:0">SHADEO</a>
+              <p>Premium sunglasses and eyeglasses for women, men and kids, at honest prices. Designed in Dhaka. Worn everywhere.</p>
               <div class="socials">
                 <a href="${CFG.instagram}" target="_blank" rel="noopener" aria-label="Instagram">IG</a>
                 <a href="${CFG.facebook}" target="_blank" rel="noopener" aria-label="Facebook">FB</a>
@@ -312,47 +300,47 @@
               </div>
             </div>
             <div><h3>Shop</h3><ul>
-              <li><a href="shop.html?c=sunglasses">Sunglasses</a></li><li><a href="shop.html?c=eyeglasses">Eyeglasses</a></li>
-              <li><a href="shop.html?c=blue-light">Blue Light</a></li><li><a href="shop.html?c=accessories">Accessories</a></li>
-              <li><a href="shop.html?c=sale">Sale</a></li></ul></div>
+              <li><a href="shop.html?c=women">Women</a></li><li><a href="shop.html?c=men">Men</a></li>
+              <li><a href="shop.html?c=kids">Kids</a></li><li><a href="shop.html?c=eyeglasses">Optical</a></li>
+              <li><a href="shop.html?c=accessories">Accessories</a></li><li><a href="shop.html?c=sale">Sale</a></li></ul></div>
             <div><h3>Help</h3><ul>
-              <li><a href="policies.html#shipping">Shipping</a></li><li><a href="policies.html#returns">Returns &amp; Exchanges</a></li>
+              <li><a href="policies.html#shipping">Delivery</a></li><li><a href="policies.html#returns">Returns &amp; exchanges</a></li>
               <li><a href="policies.html#warranty">Warranty</a></li><li><a href="faq.html">FAQ</a></li>
-              <li><a href="track-order.html">Track Order</a></li><li><a href="contact.html">Contact Us</a></li></ul></div>
-            <div><h3>Company</h3><ul>
-              <li><a href="about.html">About SHADEO</a></li><li><a href="prescription.html">Prescription</a></li>
-              <li><a href="face-shapes.html">Face Shape Guide</a></li><li><a href="blog.html">Journal</a></li>
-              <li><a href="policies.html#privacy">Privacy</a></li><li><a href="policies.html#terms">Terms</a></li></ul></div>
+              <li><a href="track-order.html">Track order</a></li><li><a href="contact.html">Contact us</a></li></ul></div>
+            <div><h3>SHADEO</h3><ul>
+              <li><a href="about.html">Our story</a></li><li><a href="prescription.html">Prescription</a></li>
+              <li><a href="face-shapes.html">Face shape guide</a></li><li><a href="quiz.html">Frame quiz</a></li>
+              <li><a href="blog.html">Journal</a></li></ul></div>
             <div class="footer__news">
-              <h3>Get 10% off</h3>
-              <p>New drops, private sales and style tips. No spam, just good frames.</p>
+              <h3>The SHADEO letter</h3>
+              <p>New collections, private sales and style notes. Plus 10% off your first order.</p>
               <form class="inline-form" data-signup>
                 <label class="visually-hidden" for="footer-email">Email or phone</label>
                 <input id="footer-email" type="text" placeholder="Email or phone" required>
-                <button class="btn btn--amber" type="submit">Join</button>
+                <button class="btn" type="submit">Join</button>
               </form>
               <p class="form-success" hidden></p>
             </div>
           </div>
           <div class="footer__bottom">
-            <span>© ${year} SHADEO. All rights reserved.</span>
-            <div class="pay-icons" aria-label="Payment methods"><span>COD</span><span>bKash</span><span>Nagad</span><span>VISA</span><span>Mastercard</span></div>
+            <span>© ${year} SHADEO · <a href="policies.html#privacy">Privacy</a> · <a href="policies.html#terms">Terms</a> · Photography: <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a></span>
+            <div class="pay-icons" aria-label="Payment methods"><span>Cash on Delivery</span><span>bKash</span><span>Nagad</span></div>
           </div>
         </div>
       </footer>
-      <a class="wa" href="${waLink(document.body.dataset.page === 'product' ? `Hi SHADEO! I have a question about ${document.title.split(' –')[0]}.` : '')}" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp">${icon('chat')}<span>Chat with us</span></a>
+      <a class="wa" href="${waLink('')}" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp">${icon('chat')}<span>Chat with us</span></a>
       <dialog class="modal modal--wide" id="welcome-popup" aria-labelledby="popup-title">
         <div class="popup">
-          <div class="popup__visual">${Art.frame({ shape: 'oversized', material: 'acetate', frame: '#111111', lens: '#262626', gradient: true })}</div>
+          <div class="popup__visual">${photo('assets/img/people/women-palm.jpg', '', '', true)}</div>
           <div class="popup__content">
             <button class="modal__close" type="button" data-dialog-close aria-label="Close">×</button>
             <p class="eyebrow">Welcome to SHADEO</p>
-            <h2 id="popup-title">Wait! Take 10% off</h2>
-            <p class="muted">Join the list and get 10% off your first pair, plus early access to new drops.</p>
+            <h2 id="popup-title">10% off your first pair</h2>
+            <p class="muted">Join the SHADEO letter for new collections and private sales.</p>
             <form data-signup>
               <label class="visually-hidden" for="popup-email">Email or phone</label>
               <input id="popup-email" type="text" placeholder="Email or phone number" required>
-              <button class="btn btn--block" type="submit">Get my 10%</button>
+              <button class="btn btn--block" type="submit">Unlock 10% off</button>
             </form>
             <p class="form-success" hidden></p>
             <small>One-time use. No spam, unsubscribe anytime.</small>
@@ -417,7 +405,7 @@
     if (!body) return;
     const t = Cart.totals(null, null);
     if (!t.lines.length) {
-      body.innerHTML = `<div class="cart-empty">${Art.outline('round')}<h3>Your cart is empty</h3><p class="muted">Let's find you something good.</p><a class="btn" href="shop.html?c=bestsellers">Shop bestsellers</a></div>`;
+      body.innerHTML = `<div class="cart-empty">${Art.outline('round')}<h3>Your bag is empty</h3><p class="muted">Let's find you something beautiful.</p><a class="btn" href="shop.html?c=bestsellers">Shop bestsellers</a></div>`;
       foot.innerHTML = '';
       foot.hidden = true;
       return;
@@ -561,13 +549,24 @@
     $$('[data-cfg]').forEach((el) => { el.textContent = CFG[el.dataset.cfg]; });
     window.Shadeo.ready = true;
     readyQueue.splice(0).forEach((fn) => fn());
+    initReveal();
+  }
+
+  // Sections marked .reveal fade up gently as they scroll into view
+  function initReveal() {
+    const els = $$('.reveal');
+    if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('is-in')); return; }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); } });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    els.forEach((el) => io.observe(el));
   }
 
   // Page scripts call Shadeo.onReady(fn) to run after the header/footer exist
   const readyQueue = [];
   function onReady(fn) { if (window.Shadeo.ready) fn(); else readyQueue.push(fn); }
 
-  window.Shadeo = { $, $$, money, esc, store, byHandle, isFrame, productArt, lensOptions, card, renderGrid, priceHTML, badges, Cart, openCart, toast, eta, waLink, params, icon, Art, CFG, PRODUCTS, LENSES, onReady, ready: false };
+  window.Shadeo = { $, $$, money, esc, store, byHandle, isFrame, productArt, photo, lensOptions, card, renderGrid, priceHTML, badges, Cart, openCart, toast, eta, waLink, params, icon, Art, CFG, PRODUCTS, LENSES, onReady, ready: false };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
   else boot();

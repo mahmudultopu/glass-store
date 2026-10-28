@@ -25,9 +25,13 @@ Shadeo.onReady(() => {
   const wa = $('.wa');
   if (wa) wa.href = waLink(`Hi SHADEO! I have a question about the ${p.name} ${p.style}.`);
 
-  const VIEWS = isFrame(p)
-    ? [{ bg: 'var(--white)' }, { bg: 'var(--amber-soft)' }, { bg: 'linear-gradient(160deg,#2B2D42,#5C4B6B 60%,#F2A65A)' }, { bg: 'var(--amber)' }]
-    : [{ bg: 'var(--white)' }, { bg: 'var(--amber-soft)' }];
+  // Gallery: the product photo, a close-up of it, and a lifestyle photo of a similar style
+  const VIEWS = [
+    { src: p.image, alt: `${p.name} ${p.style}`, pos: 'center' },
+    { src: p.image, alt: `${p.name} ${p.style}, close-up`, pos: 'center', zoom: true },
+  ];
+  if (p.look) VIEWS.push({ src: p.look, alt: 'Styled look with a similar frame', caption: 'Styled look · similar style' });
+  const viewImg = (v, cls) => `<img src="${v.src}" alt="${esc(v.alt)}" class="${cls || ''}" style="${v.zoom ? 'transform:scale(1.6);' : ''}" loading="eager" decoding="async">`;
 
   const lensById = (id) => lenses.find((l) => l.id === id);
   const unitPrice = () => p.price + (lensById(state.lens) ? lensById(state.lens).price : 0);
@@ -37,8 +41,8 @@ Shadeo.onReady(() => {
   function galleryHTML() {
     return `
       <div class="gallery">
-        <div class="gallery__main" id="gallery-main" style="background:${VIEWS[state.view].bg}" role="button" tabindex="0" aria-label="Zoom image">${productArt(p, state.color)}</div>
-        <div class="gallery__thumbs">${VIEWS.map((v, i) => `<button type="button" class="thumb${i === state.view ? ' is-active' : ''}" style="background:${v.bg}" data-view="${i}" aria-label="View ${i + 1}">${productArt(p, state.color, false)}</button>`).join('')}</div>
+        <div class="gallery__main" id="gallery-main" role="button" tabindex="0" aria-label="Zoom image">${viewImg(VIEWS[state.view])}${VIEWS[state.view].caption ? `<span class="gallery__caption">${VIEWS[state.view].caption}</span>` : ''}</div>
+        <div class="gallery__thumbs">${VIEWS.map((v, i) => `<button type="button" class="thumb${i === state.view ? ' is-active' : ''}" data-view="${i}" aria-label="View ${i + 1}">${viewImg(v)}</button>`).join('')}</div>
       </div>`;
   }
 
@@ -99,7 +103,7 @@ Shadeo.onReady(() => {
     const c = p.colors[state.color];
     const lowStock = p.stock > 0 && p.stock <= CFG.lowStockAt;
     const needsRx = lensById(state.lens) && lensById(state.lens).rx;
-    const typeCrumb = { Sunglasses: ['sunglasses', 'Sunglasses'], Eyeglasses: ['eyeglasses', 'Eyeglasses'], 'Blue Light Glasses': ['blue-light', 'Blue Light'], Accessories: ['accessories', 'Accessories'] }[p.type];
+    const typeCrumb = { Sunglasses: ['sunglasses', 'Sunglasses'], Eyeglasses: ['eyeglasses', 'Eyeglasses'], 'Blue Light Glasses': ['blue-light', 'Blue Light'], Kids: ['kids', 'Kids'], Accessories: ['accessories', 'Accessories'] }[p.type];
 
     root.innerHTML = `
       <nav class="breadcrumbs" aria-label="Breadcrumb" style="padding-top:18px"><a href="index.html">Home</a> / <a href="shop.html?c=${typeCrumb[0]}">${typeCrumb[1]}</a> / <span>${esc(p.name)}</span></nav>
@@ -107,16 +111,15 @@ Shadeo.onReady(() => {
         ${galleryHTML()}
         <div class="product__info">
           <div class="card__badges" style="position:static;margin-bottom:12px">${badges(p)}</div>
-          <h1>${esc(p.name)} <span style="display:block;font-size:.5em;color:var(--muted)">${esc(p.style)}</span></h1>
-          <p class="product__tagline">${esc(p.tagline)}</p>
+          <h1>${esc(p.name)}</h1>
+          <p class="product__style">${esc(p.style)}</p>
           <div class="product__price">${money(p.price)}${sale ? `<s>${money(p.compare)}</s><span class="save">Save ${money(p.compare - p.price)}</span>` : ''}</div>
-          <p class="product__installment">Pay on delivery, or with bKash, Nagad or card.</p>
+          <p class="product__installment">Pay on delivery, or with bKash or Nagad.</p>
+          <p class="product__tagline">${esc(p.tagline)}</p>
 
-          ${p.colors.length > 1 || isFrame(p) ? `
           <div class="opt">
             <div class="opt__label">Color <span>${esc(c.name)}</span></div>
-            <div class="color-opts">${p.colors.map((col, i) => `<button type="button" class="color-opt" data-color="${i}" aria-pressed="${i === state.color}" aria-label="${esc(col.name)}"><span style="background:${col.frame};--lens:${col.clear ? '#e9eef3' : col.lens}"></span></button>`).join('')}</div>
-          </div>` : ''}
+          </div>
 
           ${lensHTML()}
 
@@ -233,12 +236,13 @@ Shadeo.onReady(() => {
   }
 
   root.addEventListener('click', (e) => {
-    const col = e.target.closest('[data-color]');
-    if (col) { state.color = Number(col.dataset.color); render(); return; }
     const view = e.target.closest('[data-view]');
     if (view) {
       state.view = Number(view.dataset.view);
-      $('#gallery-main').style.background = VIEWS[state.view].bg;
+      const v = VIEWS[state.view];
+      const main = $('#gallery-main');
+      main.classList.remove('is-zoomed');
+      main.innerHTML = viewImg(v) + (v.caption ? `<span class="gallery__caption">${v.caption}</span>` : '');
       $$('.thumb').forEach((t) => t.classList.toggle('is-active', t === view));
       return;
     }
